@@ -52,7 +52,7 @@ export const SceneCanvas: React.FC = () => {
   };
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-[#0a0f1d]">
+    <div className="relative w-full h-full overflow-hidden bg-[#F1F5F9]">
       {/* 3D Viewport Controls Floating Overlay */}
       <div className="absolute top-3 left-3 z-10 flex items-center space-x-1 glass-dock p-1 rounded-xl">
         <Tooltip>
@@ -131,6 +131,8 @@ export const SceneCanvas: React.FC = () => {
         camera={{ position: [10, 12, 12], fov: 45 }}
         onPointerMissed={() => clearSelection()}
       >
+        <color attach="background" args={["#f1f5f9"]} />
+        <fog attach="fog" args={["#f1f5f9", 25, 75]} />
         <CameraController />
         <Lighting3D
           settings={project?.settings || { sunAzimuth: 135, sunAltitude: 45, shadowsEnabled: true }}
@@ -139,8 +141,14 @@ export const SceneCanvas: React.FC = () => {
 
         {/* 3D Scene Hierarchy */}
         <group ref={sceneRef}>
+          {/* Architectural Ground Plane */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]} receiveShadow>
+            <planeGeometry args={[120, 120]} />
+            <meshStandardMaterial color="#f8fafc" roughness={0.9} metalness={0.02} />
+          </mesh>
+
           {/* Ground Grid Helper */}
-          <gridHelper args={[40, 40, "#3b82f6", "#1e293b"]} position={[0, -0.01, 0]} />
+          <gridHelper args={[50, 50, "#2563eb", "#cbd5e1"]} position={[0, -0.01, 0]} />
 
           {/* Render All Floors (Multi-Floor Architecture) */}
           {(project?.floors || []).map((floor) => {

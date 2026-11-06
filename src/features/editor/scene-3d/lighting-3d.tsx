@@ -28,8 +28,8 @@ export const Lighting3D: React.FC<Lighting3DProps> = ({ settings, lights }) => {
       {/* Directional Sun */}
       <directionalLight
         position={sunPosition}
-        intensity={1.2}
-        color="#fffbf2"
+        intensity={1.35}
+        color="#fffbf5"
         castShadow={settings.shadowsEnabled}
         shadow-mapSize={[2048, 2048]}
         shadow-camera-near={0.5}
@@ -41,16 +41,16 @@ export const Lighting3D: React.FC<Lighting3DProps> = ({ settings, lights }) => {
         shadow-bias={-0.0005}
       />
 
-      {/* Hemispherical Ambient Light (Sky tone + Ground bounce) */}
+      {/* Hemispherical Ambient Light (Clean daylight sky + light ground bounce) */}
       <hemisphereLight
-        args={["#93c5fd", "#1e293b", 0.6]}
+        args={["#ffffff", "#e2e8f0", 0.75]}
       />
 
-      {/* Secondary fill light */}
+      {/* Secondary soft architectural fill */}
       <directionalLight
-        position={[-sunPosition.x * 0.5, 10, -sunPosition.z * 0.5]}
-        intensity={0.3}
-        color="#e0f2fe"
+        position={[-sunPosition.x * 0.5, 12, -sunPosition.z * 0.5]}
+        intensity={0.35}
+        color="#ffffff"
       />
 
       {/* Custom project point lights */}

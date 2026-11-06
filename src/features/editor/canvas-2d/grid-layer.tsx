@@ -47,10 +47,10 @@ export const GridLayer: React.FC<GridLayerProps> = ({
   const lines: React.ReactNode[] = [];
   const isDark = theme === "dark";
 
-  // Ultra-delicate minimal architectural grid
-  const minorColor = isDark ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.04)";
-  const majorColor = isDark ? "rgba(255, 255, 255, 0.07)" : "rgba(0, 0, 0, 0.08)";
-  const axisColor = isDark ? "rgba(59, 130, 246, 0.3)" : "rgba(37, 99, 235, 0.3)";
+  // Ultra-delicate architectural CAD grid
+  const minorColor = "#E9EDF3";
+  const majorColor = "#D1D5DB";
+  const axisColor = "rgba(37, 99, 235, 0.45)";
 
   // Vertical grid lines
   for (let x = startGridX; x <= endGridX; x += gridSize) {

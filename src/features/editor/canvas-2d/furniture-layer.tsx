@@ -68,11 +68,11 @@ export const FurnitureLayer: React.FC<FurnitureLayerProps> = ({
               width={wPx}
               height={dPx}
               cornerRadius={3}
-              fill="#141720"
-              stroke={isSelected ? "#3b82f6" : "#343c4d"}
-              strokeWidth={isSelected ? 1.5 : 0.8}
-              shadowBlur={isSelected ? 6 : 0}
-              shadowColor="#3b82f6"
+              fill="#ffffff"
+              stroke={isSelected ? "#2563eb" : "#94a3b8"}
+              strokeWidth={isSelected ? 2 : 1}
+              shadowBlur={isSelected ? 6 : 2}
+              shadowColor={isSelected ? "rgba(37, 99, 235, 0.3)" : "rgba(0, 0, 0, 0.05)"}
             />
 
             {/* Architectural Furniture Details by Category */}
@@ -85,8 +85,8 @@ export const FurnitureLayer: React.FC<FurnitureLayerProps> = ({
                   width={wPx * 0.35}
                   height={dPx * 0.25}
                   cornerRadius={2}
-                  fill="#334155"
-                  stroke="#475569"
+                  fill="#f1f5f9"
+                  stroke="#cbd5e1"
                   strokeWidth={1}
                 />
                 <Rect
@@ -95,14 +95,14 @@ export const FurnitureLayer: React.FC<FurnitureLayerProps> = ({
                   width={wPx * 0.35}
                   height={dPx * 0.25}
                   cornerRadius={2}
-                  fill="#334155"
-                  stroke="#475569"
+                  fill="#f1f5f9"
+                  stroke="#cbd5e1"
                   strokeWidth={1}
                 />
                 {/* Blanket Fold Line */}
                 <Line
                   points={[-wPx * 0.45, -dPx * 0.1, wPx * 0.45, -dPx * 0.1]}
-                  stroke="#64748b"
+                  stroke="#94a3b8"
                   strokeWidth={1}
                 />
               </>
@@ -117,7 +117,9 @@ export const FurnitureLayer: React.FC<FurnitureLayerProps> = ({
                   width={wPx}
                   height={dPx * 0.3}
                   cornerRadius={2}
-                  fill="#334155"
+                  fill="#f1f5f9"
+                  stroke="#cbd5e1"
+                  strokeWidth={1}
                 />
               </>
             )}
@@ -127,7 +129,7 @@ export const FurnitureLayer: React.FC<FurnitureLayerProps> = ({
                 x={0}
                 y={0}
                 radius={Math.min(wPx, dPx) * 0.35}
-                stroke="#64748b"
+                stroke="#94a3b8"
                 strokeWidth={1}
               />
             )}
@@ -140,7 +142,7 @@ export const FurnitureLayer: React.FC<FurnitureLayerProps> = ({
               width={wPx}
               align="center"
               fontSize={Math.max(8, Math.min(10, 9 * transform.scale))}
-              fill="#cbd5e1"
+              fill="#202124"
               listening={false}
             />
 

@@ -31,8 +31,8 @@ export class CADErrorBoundary extends Component<Props, State> {
   public render() {
     if (this.state.hasError) {
       return (
-        <div className="flex-1 h-full w-full flex flex-col items-center justify-center bg-[#090d16] text-foreground p-6 select-none">
-          <div className="max-w-md w-full p-6 rounded-2xl border border-destructive/30 bg-destructive/5 backdrop-blur-xl flex flex-col items-center text-center space-y-4 shadow-2xl">
+        <div className="flex-1 h-full w-full flex flex-col items-center justify-center bg-[#F7F8FA] text-foreground p-6 select-none">
+          <div className="max-w-md w-full p-6 rounded-2xl border border-destructive/30 bg-white shadow-xl flex flex-col items-center text-center space-y-4">
             <div className="h-12 w-12 rounded-xl bg-destructive/10 text-destructive flex items-center justify-center">
               <AlertCircle className="h-6 w-6" />
             </div>

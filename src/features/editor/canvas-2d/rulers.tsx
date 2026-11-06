@@ -51,8 +51,8 @@ export const Rulers: React.FC<RulersProps> = ({
           className="absolute top-0 flex flex-col items-center pointer-events-none"
           style={{ left: `${scX}px` }}
         >
-          <div className="h-1.5 w-[1px] bg-muted-foreground/30" />
-          <span className="text-[8px] font-mono text-muted-foreground/70 select-none -translate-x-1/2">
+          <div className="h-1.5 w-[1px] bg-gray-400" />
+          <span className="text-[8px] font-mono text-[#6B7280] select-none -translate-x-1/2">
             {x.toFixed(x % 1 === 0 ? 0 : 1)}
           </span>
         </div>
@@ -70,8 +70,8 @@ export const Rulers: React.FC<RulersProps> = ({
           className="absolute left-0 flex items-center pointer-events-none"
           style={{ top: `${scY}px` }}
         >
-          <div className="w-1.5 h-[1px] bg-muted-foreground/30" />
-          <span className="text-[8px] font-mono text-muted-foreground/70 select-none -rotate-90 origin-left ml-0.5">
+          <div className="w-1.5 h-[1px] bg-gray-400" />
+          <span className="text-[8px] font-mono text-[#6B7280] select-none -rotate-90 origin-left ml-0.5">
             {y.toFixed(y % 1 === 0 ? 0 : 1)}
           </span>
         </div>
@@ -83,7 +83,7 @@ export const Rulers: React.FC<RulersProps> = ({
     <>
       {/* Corner Origin block */}
       <div
-        className="absolute top-0 left-0 bg-background/90 border-r border-b border-border/40 z-20 flex items-center justify-center font-mono text-[8px] text-muted-foreground/50"
+        className="absolute top-0 left-0 bg-white border-r border-b border-[#E5E7EB] z-20 flex items-center justify-center font-mono text-[8px] font-medium text-[#6B7280]"
         style={{ width: `${rulerSize}px`, height: `${rulerSize}px` }}
       >
         m
@@ -91,13 +91,13 @@ export const Rulers: React.FC<RulersProps> = ({
 
       {/* Top Ruler Bar */}
       <div
-        className="absolute top-0 left-[18px] right-0 bg-background/80 backdrop-blur-sm border-b border-border/40 overflow-hidden z-10 pointer-events-none"
+        className="absolute top-0 left-[18px] right-0 bg-white/95 backdrop-blur-sm border-b border-[#E5E7EB] overflow-hidden z-10 pointer-events-none"
         style={{ height: `${rulerSize}px` }}
       >
         {topTicks}
         {cursorPos && (
           <div
-            className="absolute top-0 bottom-0 w-[1px] bg-primary/80 z-20"
+            className="absolute top-0 bottom-0 w-[1px] bg-[#2563EB] z-20"
             style={{ left: `${cursorPos.x}px` }}
           />
         )}
@@ -105,13 +105,13 @@ export const Rulers: React.FC<RulersProps> = ({
 
       {/* Left Ruler Bar */}
       <div
-        className="absolute top-[18px] left-0 bottom-0 bg-background/80 backdrop-blur-sm border-r border-border/40 overflow-hidden z-10 pointer-events-none"
+        className="absolute top-[18px] left-0 bottom-0 bg-white/95 backdrop-blur-sm border-r border-[#E5E7EB] overflow-hidden z-10 pointer-events-none"
         style={{ width: `${rulerSize}px` }}
       >
         {leftTicks}
         {cursorPos && (
           <div
-            className="absolute left-0 right-0 h-[1px] bg-primary/80 z-20"
+            className="absolute left-0 right-0 h-[1px] bg-[#2563EB] z-20"
             style={{ top: `${cursorPos.y}px` }}
           />
         )}

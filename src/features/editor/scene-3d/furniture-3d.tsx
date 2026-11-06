@@ -110,7 +110,7 @@ function renderProceduralModel(
           <mesh position={[0, -h * 0.15, 0]} castShadow receiveShadow>
             <boxGeometry args={[w, h * 0.35, d]} />
             <meshStandardMaterial
-              color={highlightColor || "#334155"}
+              color={highlightColor || "#e2e8f0"}
               roughness={0.8}
             />
           </mesh>
@@ -118,7 +118,7 @@ function renderProceduralModel(
           <mesh position={[0, h * 0.25, -d * 0.35]} castShadow>
             <boxGeometry args={[w, h * 0.5, d * 0.28]} />
             <meshStandardMaterial
-              color={highlightColor || "#1e293b"}
+              color={highlightColor || "#cbd5e1"}
               roughness={0.8}
             />
           </mesh>
@@ -126,15 +126,15 @@ function renderProceduralModel(
           <mesh position={[-w * 0.46, h * 0.05, 0]} castShadow>
             <boxGeometry args={[w * 0.08, h * 0.45, d]} />
             <meshStandardMaterial
-              color={highlightColor || "#1e293b"}
-              roughness={0.8}
+              color={highlightColor || "#94a3b8"}
+              roughness={0.7}
             />
           </mesh>
           <mesh position={[w * 0.46, h * 0.05, 0]} castShadow>
             <boxGeometry args={[w * 0.08, h * 0.45, d]} />
             <meshStandardMaterial
-              color={highlightColor || "#1e293b"}
-              roughness={0.8}
+              color={highlightColor || "#94a3b8"}
+              roughness={0.7}
             />
           </mesh>
         </group>
@@ -147,8 +147,8 @@ function renderProceduralModel(
           <mesh position={[0, h * 0.45, 0]} castShadow receiveShadow>
             <boxGeometry args={[w, 0.04, d]} />
             <meshStandardMaterial
-              color={highlightColor || "#5c4033"}
-              roughness={0.4}
+              color={highlightColor || "#d4a373"}
+              roughness={0.35}
             />
           </mesh>
           {/* 4 Table Legs */}
@@ -157,9 +157,9 @@ function renderProceduralModel(
               <mesh key={`${x}_${z}`} position={[x, -0.02, z]} castShadow>
                 <cylinderGeometry args={[0.025, 0.025, h * 0.9, 12]} />
                 <meshStandardMaterial
-                  color={highlightColor || "#1e293b"}
-                  roughness={0.3}
-                  metalness={0.5}
+                  color={highlightColor || "#334155"}
+                  roughness={0.4}
+                  metalness={0.4}
                 />
               </mesh>
             ))
@@ -174,7 +174,7 @@ function renderProceduralModel(
           <mesh position={[0, -h * 0.25, 0]} castShadow receiveShadow>
             <boxGeometry args={[w, h * 0.3, d]} />
             <meshStandardMaterial
-              color={highlightColor || "#475569"}
+              color={highlightColor || "#cbd5e1"}
               roughness={0.7}
             />
           </mesh>
@@ -182,7 +182,7 @@ function renderProceduralModel(
           <mesh position={[0, 0, 0]} castShadow>
             <boxGeometry args={[w * 0.96, h * 0.28, d * 0.94]} />
             <meshStandardMaterial
-              color={highlightColor || "#f1f5f9"}
+              color={highlightColor || "#ffffff"}
               roughness={0.9}
             />
           </mesh>
@@ -190,7 +190,7 @@ function renderProceduralModel(
           <mesh position={[0, h * 0.2, -d * 0.46]} castShadow>
             <boxGeometry args={[w, h * 0.65, 0.08]} />
             <meshStandardMaterial
-              color={highlightColor || "#1e293b"}
+              color={highlightColor || "#64748b"}
               roughness={0.6}
             />
           </mesh>

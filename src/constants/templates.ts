@@ -20,7 +20,7 @@ export const TEMPLATE_MINIMALIST_VILLA: ProjectDocument = {
     wallThicknessDefault: 0.2,
     wallHeightDefault: 2.8,
     ceilingHeightDefault: 2.8,
-    theme: 'dark',
+    theme: 'light',
     sunAzimuth: 135,
     sunAltitude: 45,
     shadowsEnabled: true,

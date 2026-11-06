@@ -185,10 +185,24 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
 
   getCurrentFloor: () => {
     const { project } = get();
-    return (
-      project.floors.find((f) => f.id === project.activeFloorId) ||
-      project.floors[0]
-    );
+    const found = project?.floors?.find((f) => f.id === project.activeFloorId) || project?.floors?.[0];
+    if (found) return found;
+
+    return {
+      id: "floor_default",
+      level: 0,
+      name: "Ground Floor",
+      elevation: 0,
+      height: 2.8,
+      walls: [],
+      doors: [],
+      windows: [],
+      rooms: [],
+      furniture: [],
+      roofs: [],
+      lights: [],
+      dimensions: [],
+    };
   },
 
   // Wall mutations

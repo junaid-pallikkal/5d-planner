@@ -97,7 +97,7 @@ export const TopBar: React.FC = () => {
   };
 
   return (
-    <header className="h-12 border-b border-border/50 bg-background/85 backdrop-blur-xl px-3 flex items-center justify-between z-30 select-none">
+    <header className="h-12 border-b border-[#E5E7EB] bg-white/95 backdrop-blur-xl px-3 flex items-center justify-between z-30 select-none">
       <input
         ref={fileInputRef}
         type="file"
@@ -113,18 +113,18 @@ export const TopBar: React.FC = () => {
           className="flex items-center space-x-2 text-foreground hover:opacity-80 transition-opacity"
           title="Back to Dashboard"
         >
-          <div className="h-6 w-6 rounded bg-foreground text-background flex items-center justify-center font-bold text-[11px] tracking-wider">
+          <div className="h-6 w-6 rounded bg-[#2563EB] text-white flex items-center justify-center font-bold text-[11px] tracking-wider shadow-sm">
             5D
           </div>
         </Link>
 
-        <span className="text-muted-foreground/30 text-xs">/</span>
+        <span className="text-[#6B7280]/40 text-xs">/</span>
 
         {/* Project Name Input */}
         <input
           value={project.name}
           onChange={(e) => updateMetadata(e.target.value)}
-          className="bg-transparent font-medium text-xs text-foreground hover:bg-muted/40 focus:bg-muted/60 px-1.5 py-0.5 rounded transition-colors border-none outline-none max-w-[160px] sm:max-w-[220px] truncate"
+          className="bg-transparent font-medium text-xs text-[#202124] hover:bg-[#F1F5F9] focus:bg-[#F1F5F9] px-1.5 py-0.5 rounded transition-colors border border-transparent focus:border-[#E5E7EB] outline-none max-w-[160px] sm:max-w-[220px] truncate"
           title="Rename project"
         />
 
@@ -181,7 +181,7 @@ export const TopBar: React.FC = () => {
         <span className="text-border/80 h-3 w-[1px] mx-0.5" />
 
         {/* View Mode Segmented Controls */}
-        <div className="flex items-center bg-muted/40 p-0.5 rounded-lg border border-border/50">
+        <div className="flex items-center bg-[#F1F5F9] p-0.5 rounded-lg border border-[#E5E7EB]">
           <Button
             variant={viewMode === "2d" ? "activeCad" : "ghost"}
             size="sm"

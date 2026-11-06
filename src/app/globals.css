@@ -4,72 +4,63 @@
 
 @layer base {
   :root {
-    --background: 220 20% 98%;
-    --foreground: 224 71% 4%;
+    /* Professional Architectural Light Theme */
+    --background: 220 14% 97.6%; /* #F7F8FA */
+    --foreground: 224 6% 13%;    /* #202124 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 224 71% 4%;
+    --card: 0 0% 100%;           /* #FFFFFF */
+    --card-foreground: 224 6% 13%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71% 4%;
+    --popover: 0 0% 100%;        /* #FFFFFF */
+    --popover-foreground: 224 6% 13%;
 
-    --primary: 221 83% 53%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 221 83% 53%;      /* #2563EB */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 9% 46%;
+    --secondary: 0 0% 100%;      /* #FFFFFF */
+    --secondary-foreground: 220 9% 46%; /* #6B7280 */
 
-    --muted: 220 14% 94%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 210 40% 96.1%;      /* #F1F5F9 */
+    --muted-foreground: 220 9% 46%; /* #6B7280 */
 
-    --accent: 220 14% 93%;
-    --accent-foreground: 224 71% 4%;
+    --accent: 210 40% 96.1%;     /* #F1F5F9 */
+    --accent-foreground: 224 6% 13%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;    /* #DC2626 */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 89%;
-    --input: 220 13% 89%;
-    --ring: 221 83% 53%;
+    --border: 220 13% 91%;       /* #E5E7EB */
+    --input: 220 13% 91%;        /* #E5E7EB */
+    --ring: 221 83% 53%;         /* #2563EB */
 
     --radius: 0.75rem;
 
-    --cad-grid: 220 13% 90%;
-    --cad-wall: 224 71% 10%;
+    --cad-grid: 216 27% 94%;     /* #E9EDF3 */
+    --cad-wall: 224 71% 10%;     /* Crisp dark charcoal wall in light CAD */
   }
 
   .dark {
-    /* Pure Obsidian / Modern Studio Aesthetic */
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 5.5%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 5.5%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 217 91% 60%;
-    --primary-foreground: 240 10% 3.9%;
-
-    --secondary: 240 5% 11%;
-    --secondary-foreground: 240 5% 65%;
-
-    --muted: 240 5% 10%;
-    --muted-foreground: 240 5% 55%;
-
-    --accent: 240 5% 14%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62% 45%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 5% 12%;
-    --input: 240 5% 12%;
-    --ring: 217 91% 60%;
-
-    --cad-grid: 240 5% 8%;
-    --cad-wall: 0 0% 96%;
+    --background: 220 14% 97.6%;
+    --foreground: 224 6% 13%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 6% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 6% 13%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 100%;
+    --secondary-foreground: 220 9% 46%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 224 6% 13%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 221 83% 53%;
+    --cad-grid: 216 27% 94%;
+    --cad-wall: 224 71% 10%;
   }
 }
 
@@ -84,41 +75,35 @@
   }
 }
 
-/* Glassmorphism & Minimal CAD Aesthetics */
+/* Glassmorphism & Minimal CAD Aesthetics for Light Theme */
 .glass-panel {
-  background: rgba(14, 15, 19, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.light .glass-panel {
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 }
 
 .glass-dock {
-  background: rgba(18, 19, 24, 0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(255, 255, 255, 0.05);
-}
-
-.light .glass-dock {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.02);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 1px 3px 0 rgba(0, 0, 0, 0.04);
 }
 
 .cad-dots {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(107, 114, 128, 0.12) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
-.light .cad-dots {
-  background-image: radial-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px);
-  background-size: 24px 24px;
+/* Architectural blueprint paper styling */
+.cad-paper {
+  background-color: #F7F8FA;
+  background-image: 
+    linear-gradient(#E9EDF3 1px, transparent 1px),
+    linear-gradient(90deg, #E9EDF3 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
 /* Custom scrollbars */
@@ -130,9 +115,9 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.18);
+  background: #D1D5DB;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.35);
+  background: #9CA3AF;
 }

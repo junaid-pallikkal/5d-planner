@@ -31,12 +31,17 @@ export const AIAssistantPanel: React.FC = () => {
   const runAnalysis = () => {
     setAnalyzing(true);
     setTimeout(() => {
-      const totalWallLength = floor.walls.reduce(
+      const walls = floor?.walls || [];
+      const rooms = floor?.rooms || [];
+      const windows = floor?.windows || [];
+      const doors = floor?.doors || [];
+
+      const totalWallLength = walls.reduce(
         (sum, w) => sum + WallMath.length(w),
         0
       );
-      const totalFloorArea = floor.rooms.reduce((sum, r) => sum + r.area, 0);
-      const windowGlazingArea = floor.windows.reduce(
+      const totalFloorArea = rooms.reduce((sum, r) => sum + r.area, 0);
+      const windowGlazingArea = windows.reduce(
         (sum, w) => sum + w.width * w.height,
         0
       );
@@ -46,11 +51,11 @@ export const AIAssistantPanel: React.FC = () => {
       setAnalysisResult({
         totalWallLength: Math.round(totalWallLength * 10) / 10,
         totalFloorArea: Math.round(totalFloorArea * 10) / 10,
-        roomCount: floor.rooms.length,
-        doorCount: floor.doors.length,
-        windowCount: floor.windows.length,
+        roomCount: rooms.length,
+        doorCount: doors.length,
+        windowCount: windows.length,
         glazingRatio: Math.round(glazingRatio * 10) / 10,
-        solarRating: project.settings.sunAltitude > 30 ? "Optimal Natural Daylighting" : "Sub-Optimal Sun Angle",
+        solarRating: (project?.settings?.sunAltitude || 45) > 30 ? "Optimal Natural Daylighting" : "Sub-Optimal Sun Angle",
         efficiencyRating: totalFloorArea > 20 ? "High Spatial Efficiency (88%)" : "Compact Layout (92%)",
       });
       setAnalyzing(false);

@@ -38,7 +38,7 @@ export const PropertiesPanel: React.FC = () => {
 
   // 1. Wall Properties
   if (selectedType === 'wall') {
-    const wall = floor.walls.find((w) => w.id === primaryId);
+    const wall = (floor?.walls || []).find((w) => w.id === primaryId);
     if (!wall) return null;
     const length = WallMath.length(wall);
 
@@ -111,7 +111,7 @@ export const PropertiesPanel: React.FC = () => {
 
   // 2. Door Properties
   if (selectedType === 'door') {
-    const door = floor.doors.find((d) => d.id === primaryId);
+    const door = (floor?.doors || []).find((d) => d.id === primaryId);
     if (!door) return null;
 
     return (
@@ -170,7 +170,7 @@ export const PropertiesPanel: React.FC = () => {
 
   // 3. Window Properties
   if (selectedType === 'window') {
-    const win = floor.windows.find((w) => w.id === primaryId);
+    const win = (floor?.windows || []).find((w) => w.id === primaryId);
     if (!win) return null;
 
     return (
@@ -227,7 +227,7 @@ export const PropertiesPanel: React.FC = () => {
 
   // 4. Room Properties
   if (selectedType === 'room') {
-    const room = floor.rooms.find((r) => r.id === primaryId);
+    const room = (floor?.rooms || []).find((r) => r.id === primaryId);
     if (!room) return null;
 
     return (
@@ -276,7 +276,7 @@ export const PropertiesPanel: React.FC = () => {
 
   // 5. Furniture Properties
   if (selectedType === 'furniture') {
-    const item = floor.furniture.find((f) => f.id === primaryId);
+    const item = (floor?.furniture || []).find((f) => f.id === primaryId);
     if (!item) return null;
 
     return (

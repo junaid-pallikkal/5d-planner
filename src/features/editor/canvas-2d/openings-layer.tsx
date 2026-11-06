@@ -56,9 +56,9 @@ export const OpeningsLayer: React.FC<OpeningsLayerProps> = ({
               y={(-wall.thickness * pixelsPerMeter) / 2}
               width={doorWidthPx}
               height={wall.thickness * pixelsPerMeter}
-              fill="#0d111a"
-              stroke={isSelected ? "#3b82f6" : "#f97316"}
-              strokeWidth={isSelected ? 1.5 : 0.8}
+              fill="#ffffff"
+              stroke={isSelected ? "#2563eb" : "#d97706"}
+              strokeWidth={isSelected ? 1.8 : 1}
             />
 
             {/* Door Leaf */}
@@ -69,8 +69,8 @@ export const OpeningsLayer: React.FC<OpeningsLayerProps> = ({
                 -doorWidthPx / 2,
                 -doorWidthPx,
               ]}
-              stroke={isSelected ? "#60a5fa" : "#fb923c"}
-              strokeWidth={1.5}
+              stroke={isSelected ? "#2563eb" : "#b45309"}
+              strokeWidth={1.8}
             />
 
             {/* Swing Arc (Quarter Circle 90°) */}
@@ -81,8 +81,8 @@ export const OpeningsLayer: React.FC<OpeningsLayerProps> = ({
               outerRadius={doorWidthPx}
               angle={90}
               rotation={270}
-              stroke={isSelected ? "#60a5fa" : "rgba(251, 146, 60, 0.35)"}
-              strokeWidth={0.8}
+              stroke={isSelected ? "#2563eb" : "rgba(217, 119, 6, 0.5)"}
+              strokeWidth={1}
               dash={[3, 3]}
             />
           </Group>
@@ -115,15 +115,15 @@ export const OpeningsLayer: React.FC<OpeningsLayerProps> = ({
               y={(-wall.thickness * pixelsPerMeter) / 2}
               width={winWidthPx}
               height={wall.thickness * pixelsPerMeter}
-              fill="#0f172a"
-              stroke={isSelected ? "#2563eb" : "#38bdf8"}
+              fill="#ffffff"
+              stroke={isSelected ? "#2563eb" : "#0284c7"}
               strokeWidth={isSelected ? 2 : 1}
             />
 
             {/* Center Glazing Line */}
             <Line
               points={[-winWidthPx / 2, 0, winWidthPx / 2, 0]}
-              stroke="#0ea5e9"
+              stroke="#0284c7"
               strokeWidth={2}
             />
 

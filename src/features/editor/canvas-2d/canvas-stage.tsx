@@ -368,7 +368,7 @@ export const CanvasStage: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full overflow-hidden bg-[#0a0c10] select-none"
+      className="relative w-full h-full overflow-hidden bg-[#F7F8FA] select-none"
       style={{
         cursor:
           tool === 'pan' || isPanning
@@ -404,7 +404,7 @@ export const CanvasStage: React.FC = () => {
           stageHeight={dimensions.height}
           gridSize={project?.settings?.gridSize || 0.5}
           showGrid={project?.settings?.showGrid ?? true}
-          theme={project?.settings?.theme || "dark"}
+          theme="light"
         />
 
         {/* Room Area fills */}

@@ -42,10 +42,10 @@ export const RoomsLayer: React.FC<RoomsLayerProps> = ({
             <Line
               points={flatPoints}
               closed
-              fill={room.color || "#3b82f6"}
-              opacity={isSelected ? 0.25 : 0.1}
-              stroke={isSelected ? "#3b82f6" : room.color || "#3b82f6"}
-              strokeWidth={isSelected ? 1.5 : 0.8}
+              fill={room.color || "#2563eb"}
+              opacity={isSelected ? 0.22 : 0.08}
+              stroke={isSelected ? "#2563eb" : room.color || "#3b82f6"}
+              strokeWidth={isSelected ? 2 : 1}
               dash={isSelected ? [4, 4] : undefined}
               onClick={() => onSelectRoom(room.id)}
               onTap={() => onSelectRoom(room.id)}
@@ -62,7 +62,7 @@ export const RoomsLayer: React.FC<RoomsLayerProps> = ({
                 fontSize={Math.max(10, Math.min(13, 11 * transform.scale))}
                 fontFamily="sans-serif"
                 fontStyle="600"
-                fill="#f1f5f9"
+                fill="#202124"
                 align="center"
                 offsetX={50}
                 offsetY={10}
@@ -73,7 +73,7 @@ export const RoomsLayer: React.FC<RoomsLayerProps> = ({
                 text={`${room.area.toFixed(1)} m²`}
                 fontSize={Math.max(8, Math.min(11, 9 * transform.scale))}
                 fontFamily="monospace"
-                fill="#94a3b8"
+                fill="#6B7280"
                 align="center"
                 offsetX={50}
                 offsetY={-5}

@@ -23,7 +23,7 @@ const CanvasStage = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex-1 h-full flex flex-col items-center justify-center bg-[#090d16] text-muted-foreground text-xs font-mono space-y-2">
+      <div className="flex-1 h-full flex flex-col items-center justify-center bg-[#F7F8FA] text-muted-foreground text-xs font-mono space-y-2">
         <Loader2 className="h-5 w-5 animate-spin text-primary" />
         <span>Loading 2D Architectural Engine...</span>
       </div>
@@ -36,7 +36,7 @@ const SceneCanvas = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex-1 h-full flex flex-col items-center justify-center bg-[#0a0f1d] text-muted-foreground text-xs font-mono space-y-2">
+      <div className="flex-1 h-full flex flex-col items-center justify-center bg-[#F1F5F9] text-muted-foreground text-xs font-mono space-y-2">
         <Loader2 className="h-5 w-5 animate-spin text-primary" />
         <span>Initializing 3D WebGL BIM Environment...</span>
       </div>
@@ -107,7 +107,7 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({ projectId }) =
 
         {/* Right Architectural Property & Studio Panels */}
         {rightSidebarOpen && activePanel && (
-          <aside className="w-80 border-l border-border/50 bg-card/80 backdrop-blur-xl flex flex-col z-20 shadow-2xl overflow-hidden transition-all">
+          <aside className="w-80 border-l border-[#E5E7EB] bg-white/95 backdrop-blur-xl flex flex-col z-20 shadow-lg overflow-hidden transition-all">
             {activePanel === "catalog" && <CatalogPanel />}
             {activePanel === "properties" && <PropertiesPanel />}
             {activePanel === "materials" && <MaterialsPanel />}
