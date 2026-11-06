@@ -24,8 +24,8 @@ export const Openings3D: React.FC<Openings3DProps> = ({
   return (
     <group position={[0, elevation, 0]}>
       {/* 3D Doors */}
-      {doors.map((door) => {
-        const wall = walls.find((w) => w.id === door.wallId);
+      {(doors || []).map((door) => {
+        const wall = (walls || []).find((w) => w.id === door.wallId);
         if (!wall) return null;
 
         const pos = WallMath.pointAtRatio(wall, door.distanceRatio);
@@ -74,8 +74,8 @@ export const Openings3D: React.FC<Openings3DProps> = ({
       })}
 
       {/* 3D Windows */}
-      {windows.map((win) => {
-        const wall = walls.find((w) => w.id === win.wallId);
+      {(windows || []).map((win) => {
+        const wall = (walls || []).find((w) => w.id === win.wallId);
         if (!wall) return null;
 
         const pos = WallMath.pointAtRatio(wall, win.distanceRatio);

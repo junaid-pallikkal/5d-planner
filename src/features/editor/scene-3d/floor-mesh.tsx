@@ -32,7 +32,7 @@ export const FloorMesh: React.FC<FloorMeshProps> = ({
         }
         shape.closePath();
 
-        const materialDef = materials.find((m) => m.id === room.floorMaterialId) || materials[3];
+        const materialDef = (materials || []).find((m) => m.id === room.floorMaterialId) || materials?.[3];
         const isSelected = selectedId === room.id;
         const color = isSelected ? "#3b82f6" : materialDef?.color || "#c29b68";
 

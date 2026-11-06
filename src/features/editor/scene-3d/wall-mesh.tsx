@@ -30,7 +30,7 @@ export const WallMesh: React.FC<WallMeshProps> = ({
   const height = wall.height || 2.8;
 
   // Material setup
-  const materialDef = materials.find((m) => m.id === wall.interiorMaterialId) || materials[0];
+  const materialDef = (materials || []).find((m) => m.id === wall.interiorMaterialId) || materials?.[0];
   const wallColor = isSelected ? "#3b82f6" : materialDef?.color || "#f8fafc";
   const roughness = materialDef?.roughness ?? 0.8;
   const metalness = materialDef?.metalness ?? 0.05;
@@ -40,8 +40,8 @@ export const WallMesh: React.FC<WallMeshProps> = ({
   const midPoint = Vector2DMath.midpoint(wall.start, wall.end);
 
   // Filter openings on this wall
-  const wallDoors = doors.filter((d) => d.wallId === wall.id);
-  const wallWindows = windows.filter((w) => w.wallId === wall.id);
+  const wallDoors = (doors || []).filter((d) => d.wallId === wall.id);
+  const wallWindows = (windows || []).filter((w) => w.wallId === wall.id);
 
   // If no openings, render solid box
   const hasOpenings = wallDoors.length > 0 || wallWindows.length > 0;

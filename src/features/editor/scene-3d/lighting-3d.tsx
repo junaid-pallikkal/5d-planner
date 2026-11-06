@@ -54,7 +54,7 @@ export const Lighting3D: React.FC<Lighting3DProps> = ({ settings, lights }) => {
       />
 
       {/* Custom project point lights */}
-      {lights.map((l) => (
+      {(lights || []).map((l) => (
         <pointLight
           key={l.id}
           position={[l.position.x, l.position.y, l.position.z]}

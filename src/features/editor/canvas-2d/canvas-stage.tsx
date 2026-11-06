@@ -31,6 +31,12 @@ export const CanvasStage: React.FC = () => {
   // Store subscriptions
   const project = useProjectStore((s) => s.project);
   const activeFloor = useProjectStore((s) => s.getCurrentFloor());
+  const walls = activeFloor?.walls || [];
+  const rooms = activeFloor?.rooms || [];
+  const doors = activeFloor?.doors || [];
+  const windows = activeFloor?.windows || [];
+  const furniture = activeFloor?.furniture || [];
+  const dimensionsList = activeFloor?.dimensions || [];
   const addWall = useProjectStore((s) => s.addWall);
   const updateWall = useProjectStore((s) => s.updateWall);
   const addDoor = useProjectStore((s) => s.addDoor);
@@ -113,14 +119,14 @@ export const CanvasStage: React.FC = () => {
   const getSnappedWorldPoint = useCallback(
     (screenPt: Point2D, refPoint?: Point2D): { worldPoint: Point2D; snap: SnapResult } => {
       const rawWorld = CoordinateService.screenToWorld(screenPt, viewportTransform, baseScale);
-      const snap = SnappingService.snap(rawWorld, activeFloor.walls, {
-        gridSize: project.settings.gridSize || 0.5,
-        snapToGrid: project.settings.gridSnap,
-        snapToEndpoints: project.settings.objectSnap,
-        snapToMidpoints: project.settings.objectSnap,
-        snapToWalls: project.settings.objectSnap,
-        snapAngles: project.settings.angleSnap && !!refPoint,
-        angleIncrementDeg: project.settings.angleSnapIncrement || 45,
+      const snap = SnappingService.snap(rawWorld, walls, {
+        gridSize: project?.settings?.gridSize || 0.5,
+        snapToGrid: project?.settings?.gridSnap ?? true,
+        snapToEndpoints: project?.settings?.objectSnap ?? true,
+        snapToMidpoints: project?.settings?.objectSnap ?? true,
+        snapToWalls: project?.settings?.objectSnap ?? true,
+        snapAngles: (project?.settings?.angleSnap ?? true) && !!refPoint,
+        angleIncrementDeg: project?.settings?.angleSnapIncrement || 45,
         referencePoint: refPoint,
       });
 
@@ -129,7 +135,7 @@ export const CanvasStage: React.FC = () => {
         snap,
       };
     },
-    [viewportTransform, baseScale, activeFloor.walls, project.settings]
+    [viewportTransform, baseScale, walls, project?.settings]
   );
 
   // Mouse move handler
@@ -248,7 +254,7 @@ export const CanvasStage: React.FC = () => {
         let minRatio = 0.5;
         let minDist = 0.5;
 
-        for (const wall of activeFloor.walls) {
+        for (const wall of walls) {
           const { point, ratio } = Vector2DMath.closestPointOnSegment(worldPoint, {
             start: wall.start,
             end: wall.end,
@@ -278,7 +284,7 @@ export const CanvasStage: React.FC = () => {
         let minRatio = 0.5;
         let minDist = 0.5;
 
-        for (const wall of activeFloor.walls) {
+        for (const wall of walls) {
           const { point, ratio } = Vector2DMath.closestPointOnSegment(worldPoint, {
             start: wall.start,
             end: wall.end,
@@ -328,8 +334,8 @@ export const CanvasStage: React.FC = () => {
       selectedAsset,
       selectedDoorType,
       selectedWindowType,
-      activeFloor.walls,
-      project.settings,
+      walls,
+      project?.settings,
       addWall,
       addDoor,
       addWindow,
@@ -396,14 +402,14 @@ export const CanvasStage: React.FC = () => {
           transform={viewportTransform}
           stageWidth={dimensions.width}
           stageHeight={dimensions.height}
-          gridSize={project.settings.gridSize}
-          showGrid={project.settings.showGrid}
-          theme={project.settings.theme}
+          gridSize={project?.settings?.gridSize || 0.5}
+          showGrid={project?.settings?.showGrid ?? true}
+          theme={project?.settings?.theme || "dark"}
         />
 
         {/* Room Area fills */}
         <RoomsLayer
-          rooms={activeFloor.rooms}
+          rooms={rooms}
           transform={viewportTransform}
           selectedId={selectedPrimaryId}
           onSelectRoom={(id) => select(id, 'room')}
@@ -411,7 +417,7 @@ export const CanvasStage: React.FC = () => {
 
         {/* Thickened Walls & Resizing Grips */}
         <WallsLayer
-          walls={activeFloor.walls}
+          walls={walls}
           transform={viewportTransform}
           selectedId={selectedPrimaryId}
           onSelectWall={(id) => select(id, 'wall')}
@@ -422,9 +428,9 @@ export const CanvasStage: React.FC = () => {
 
         {/* Doors & Windows */}
         <OpeningsLayer
-          doors={activeFloor.doors}
-          windows={activeFloor.windows}
-          walls={activeFloor.walls}
+          doors={doors}
+          windows={windows}
+          walls={walls}
           transform={viewportTransform}
           selectedId={selectedPrimaryId}
           onSelectOpening={(id, type) => select(id, type)}
@@ -432,7 +438,7 @@ export const CanvasStage: React.FC = () => {
 
         {/* Furniture Symbols */}
         <FurnitureLayer
-          furniture={activeFloor.furniture}
+          furniture={furniture}
           transform={viewportTransform}
           selectedId={selectedPrimaryId}
           onSelectFurniture={(id) => select(id, 'furniture')}
@@ -444,10 +450,10 @@ export const CanvasStage: React.FC = () => {
 
         {/* CAD Dimensions */}
         <DimensionsLayer
-          dimensions={activeFloor.dimensions}
+          dimensions={dimensionsList}
           transform={viewportTransform}
           selectedId={selectedPrimaryId}
-          unit={project.settings.unit}
+          unit={project?.settings?.unit || "m"}
           onSelectDimension={(id) => select(id, 'dimension')}
         />
 

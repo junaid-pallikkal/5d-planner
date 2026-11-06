@@ -15,6 +15,7 @@ import { useUIStore } from "@/stores/ui-store";
 import { useProjectStore } from "@/stores/project-store";
 import { ProjectStorageService } from "@/lib/storage/project-storage";
 import { Loader2 } from "lucide-react";
+import { CADErrorBoundary } from "@/components/error-boundary";
 
 // Dynamic imports with SSR disabled for browser-only 2D & 3D canvases
 const CanvasStage = dynamic(
@@ -84,7 +85,9 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({ projectId }) =
                 viewMode === "split" ? "w-1/2 border-r border-border/80" : "w-full"
               }`}
             >
-              <CanvasStage />
+              <CADErrorBoundary fallbackTitle="2D CAD Engine">
+                <CanvasStage />
+              </CADErrorBoundary>
             </div>
           )}
 
@@ -95,7 +98,9 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({ projectId }) =
                 viewMode === "split" ? "w-1/2" : "w-full"
               }`}
             >
-              <SceneCanvas />
+              <CADErrorBoundary fallbackTitle="3D WebGL BIM Environment">
+                <SceneCanvas />
+              </CADErrorBoundary>
             </div>
           )}
         </main>

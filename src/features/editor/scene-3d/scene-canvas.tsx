@@ -133,8 +133,8 @@ export const SceneCanvas: React.FC = () => {
       >
         <CameraController />
         <Lighting3D
-          settings={project.settings}
-          lights={activeFloor.lights}
+          settings={project?.settings || { sunAzimuth: 135, sunAltitude: 45, shadowsEnabled: true }}
+          lights={activeFloor?.lights || []}
         />
 
         {/* 3D Scene Hierarchy */}
@@ -143,28 +143,28 @@ export const SceneCanvas: React.FC = () => {
           <gridHelper args={[40, 40, "#3b82f6", "#1e293b"]} position={[0, -0.01, 0]} />
 
           {/* Render All Floors (Multi-Floor Architecture) */}
-          {project.floors.map((floor) => {
+          {(project?.floors || []).map((floor) => {
             const elevation = floor.elevation || 0;
             return (
               <group key={floor.id} position={[0, elevation, 0]}>
                 {/* 3D Floor Slabs */}
                 <FloorMesh
-                  rooms={floor.rooms}
+                  rooms={floor.rooms || []}
                   elevation={0}
-                  materials={project.materials}
+                  materials={project?.materials || []}
                   selectedId={selectedPrimaryId}
                   onSelectRoom={(id) => select(id, 'room')}
                 />
 
                 {/* 3D Walls with real openings */}
-                {floor.walls.map((wall) => (
+                {(floor.walls || []).map((wall) => (
                   <WallMesh
                     key={wall.id}
                     wall={wall}
-                    doors={floor.doors}
-                    windows={floor.windows}
+                    doors={floor.doors || []}
+                    windows={floor.windows || []}
                     elevation={0}
-                    materials={project.materials}
+                    materials={project?.materials || []}
                     isSelected={selectedPrimaryId === wall.id}
                     onSelect={(id) => select(id, 'wall')}
                   />
@@ -172,9 +172,9 @@ export const SceneCanvas: React.FC = () => {
 
                 {/* 3D Doors & Windows */}
                 <Openings3D
-                  doors={floor.doors}
-                  windows={floor.windows}
-                  walls={floor.walls}
+                  doors={floor.doors || []}
+                  windows={floor.windows || []}
+                  walls={floor.walls || []}
                   elevation={0}
                   selectedId={selectedPrimaryId}
                   onSelect={(id, type) => select(id, type)}
@@ -182,7 +182,7 @@ export const SceneCanvas: React.FC = () => {
 
                 {/* 3D Furniture */}
                 <Furniture3D
-                  furniture={floor.furniture}
+                  furniture={floor.furniture || []}
                   elevation={0}
                   selectedId={selectedPrimaryId}
                   onSelect={(id) => select(id, 'furniture')}
