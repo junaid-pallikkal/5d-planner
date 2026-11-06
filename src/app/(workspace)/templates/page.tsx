@@ -59,12 +59,12 @@ export default function TemplatesPage() {
           {TEMPLATES_LIST.map((template) => (
             <div
               key={template.id}
-              className="group flex flex-col justify-between p-5 rounded-xl border border-[#E5E7EB] bg-white hover:border-[#2563EB]/50 hover:shadow-md transition-all"
+              className="group flex flex-col justify-between p-5 rounded-xl border border-[#E5E7EB] bg-white hover:border-[#16A34A]/50 hover:shadow-md transition-all"
             >
               <div className="space-y-3">
-                <div className="h-28 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center relative overflow-hidden group-hover:bg-[#EFF6FF] transition-colors">
-                  <div className="absolute inset-0 bg-[radial-gradient(#2563eb_1px,transparent_1px)] opacity-15 [background-size:16px_16px]" />
-                  <Compass className="h-8 w-8 text-[#2563EB]/70 group-hover:text-[#2563EB] group-hover:scale-110 transition-all duration-200" />
+                <div className="h-28 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center relative overflow-hidden group-hover:bg-[#F0FDF4] transition-colors">
+                  <div className="absolute inset-0 bg-[radial-gradient(#16a34a_1px,transparent_1px)] opacity-15 [background-size:16px_16px]" />
+                  <Compass className="h-8 w-8 text-[#16A34A]/70 group-hover:text-[#16A34A] group-hover:scale-110 transition-all duration-200" />
                 </div>
                 <h3 className="font-semibold text-sm text-[#202124] tracking-tight">{template.name}</h3>
                 <p className="text-xs text-[#6B7280] leading-relaxed line-clamp-2">
@@ -79,7 +79,7 @@ export default function TemplatesPage() {
                 <Button
                   size="sm"
                   onClick={() => handleLaunch(template.id)}
-                  className="text-xs space-x-1 h-7 bg-[#2563EB] text-white hover:bg-[#1d4ed8]"
+                  className="text-xs space-x-1 h-7 bg-[#16A34A] text-white hover:bg-[#15803D]"
                 >
                   <span>Use Plan</span>
                   <ArrowRight className="h-3 w-3" />

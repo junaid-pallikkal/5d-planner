@@ -24,15 +24,15 @@ import {
 
 export default function MarketingPage() {
   return (
-    <div className="min-h-screen bg-[#F7F8FA] text-[#202124] flex flex-col selection:bg-[#2563EB]/20 selection:text-[#2563EB] relative overflow-hidden">
+    <div className="min-h-screen bg-[#F7F8FA] text-[#202124] flex flex-col selection:bg-[#16A34A]/20 selection:text-[#16A34A] relative overflow-hidden">
       {/* Background Architectural Grid & Subtle Radial Glow */}
       <div className="absolute inset-0 cad-dots opacity-40 pointer-events-none" />
-      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#2563EB]/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#16A34A]/5 blur-[120px] rounded-full pointer-events-none" />
 
       {/* Floating Minimal Navbar */}
       <header className="h-16 border-b border-[#E5E7EB] px-6 max-w-7xl w-full mx-auto flex items-center justify-between relative z-20 bg-white/90 backdrop-blur-md sticky top-0 shadow-sm">
         <div className="flex items-center space-x-3">
-          <div className="h-7 w-7 rounded-lg bg-[#2563EB] text-white flex items-center justify-center font-bold text-xs tracking-wider shadow-sm">
+          <div className="h-7 w-7 rounded-lg bg-[#16A34A] text-white flex items-center justify-center font-bold text-xs tracking-wider shadow-sm">
             5D
           </div>
           <span className="font-semibold tracking-tight text-xs text-[#202124]">
@@ -55,7 +55,7 @@ export default function MarketingPage() {
             </Button>
           </Link>
           <Link href="/editor/template_villa">
-            <Button size="sm" className="text-xs space-x-1.5 bg-[#2563EB] text-white hover:bg-[#1d4ed8] shadow-sm">
+            <Button size="sm" className="text-xs space-x-1.5 bg-[#16A34A] text-white hover:bg-[#15803D] shadow-sm">
               <span>Launch Studio</span>
               <ArrowRight className="h-3 w-3" />
             </Button>
@@ -74,7 +74,7 @@ export default function MarketingPage() {
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[#202124] leading-[1.1]">
             Architectural CAD. <br />
-            <span className="text-[#2563EB]">
+            <span className="text-[#16A34A]">
               Parametric 3D BIM.
             </span>
           </h1>
@@ -87,7 +87,7 @@ export default function MarketingPage() {
 
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link href="/editor/template_villa">
-              <Button size="lg" className="h-10 px-6 space-x-2 text-xs font-semibold bg-[#2563EB] text-white hover:bg-[#1d4ed8] shadow-md">
+              <Button size="lg" className="h-10 px-6 space-x-2 text-xs font-semibold bg-[#16A34A] text-white hover:bg-[#15803D] shadow-md">
                 <Compass className="h-4 w-4" />
                 <span>Open Design Studio</span>
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -126,7 +126,7 @@ export default function MarketingPage() {
 
             {/* Stylized CAD Plan Wireframe */}
             <svg
-              className="w-full max-w-lg h-56 text-[#2563EB]"
+              className="w-full max-w-lg h-56 text-[#16A34A]"
               viewBox="0 0 400 240"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -139,9 +139,9 @@ export default function MarketingPage() {
               <line x1="220" y1="140" x2="360" y2="140" stroke="#334155" strokeWidth="4" />
 
               {/* Room fills with subtle architectural tints */}
-              <rect x="43" y="33" width="174" height="174" fill="rgba(37, 99, 235, 0.06)" />
+              <rect x="43" y="33" width="174" height="174" fill="rgba(22, 163, 74, 0.08)" />
               <rect x="223" y="33" width="134" height="104" fill="rgba(16, 185, 129, 0.06)" />
-              <rect x="223" y="143" width="134" height="64" fill="rgba(6, 182, 212, 0.06)" />
+              <rect x="223" y="143" width="134" height="64" fill="rgba(5, 150, 105, 0.06)" />
 
               {/* Door Arcs */}
               <path d="M 40 100 A 30 30 0 0 1 70 130" stroke="#D97706" strokeWidth="2" strokeDasharray="3 3" />
@@ -151,8 +151,8 @@ export default function MarketingPage() {
               <line x1="220" y1="95" x2="245" y2="95" stroke="#B45309" strokeWidth="2" />
 
               {/* Glazing Window Double Lines */}
-              <line x1="100" y1="210" x2="160" y2="210" stroke="#0284C7" strokeWidth="4" />
-              <line x1="260" y1="30" x2="320" y2="30" stroke="#0284C7" strokeWidth="4" />
+              <line x1="100" y1="210" x2="160" y2="210" stroke="#16A34A" strokeWidth="4" />
+              <line x1="260" y1="30" x2="320" y2="30" stroke="#16A34A" strokeWidth="4" />
 
               {/* Dimension string annotation */}
               <line x1="40" y1="225" x2="360" y2="225" stroke="#D97706" strokeWidth="1" />
@@ -184,7 +184,7 @@ export default function MarketingPage() {
 
             {/* Floating 3D Badge */}
             <div className="absolute bottom-4 right-4 bg-white/95 border border-[#E5E7EB] px-3 py-1.5 rounded-lg flex items-center space-x-2 text-xs font-mono shadow-sm">
-              <Box className="h-3.5 w-3.5 text-[#2563EB]" />
+              <Box className="h-3.5 w-3.5 text-[#16A34A]" />
               <span className="text-[#202124] font-medium">Three.js WebGL BIM Active</span>
             </div>
           </div>
@@ -193,7 +193,7 @@ export default function MarketingPage() {
         {/* Feature Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div className="p-6 rounded-xl border border-[#E5E7EB] bg-white shadow-sm space-y-2.5">
-            <div className="h-9 w-9 rounded-lg bg-[#EFF6FF] flex items-center justify-center text-[#2563EB]">
+            <div className="h-9 w-9 rounded-lg bg-[#F0FDF4] flex items-center justify-center text-[#16A34A]">
               <PenTool className="h-4 w-4" />
             </div>
             <h3 className="font-semibold text-sm text-[#202124]">
@@ -206,7 +206,7 @@ export default function MarketingPage() {
           </div>
 
           <div className="p-6 rounded-xl border border-[#E5E7EB] bg-white shadow-sm space-y-2.5">
-            <div className="h-9 w-9 rounded-lg bg-[#EFF6FF] flex items-center justify-center text-[#2563EB]">
+            <div className="h-9 w-9 rounded-lg bg-[#F0FDF4] flex items-center justify-center text-[#16A34A]">
               <Box className="h-4 w-4" />
             </div>
             <h3 className="font-semibold text-sm text-[#202124]">
@@ -219,7 +219,7 @@ export default function MarketingPage() {
           </div>
 
           <div className="p-6 rounded-xl border border-[#E5E7EB] bg-white shadow-sm space-y-2.5">
-            <div className="h-9 w-9 rounded-lg bg-[#ECFDF5] flex items-center justify-center text-emerald-600">
+            <div className="h-9 w-9 rounded-lg bg-[#F0FDF4] flex items-center justify-center text-emerald-600">
               <Download className="h-4 w-4" />
             </div>
             <h3 className="font-semibold text-sm text-[#202124]">
