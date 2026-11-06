@@ -1,0 +1,134 @@
+// Prisma schema for 5D Architect
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum SharePermission {
+  VIEW
+  EDIT
+  ADMIN
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String?
+  email         String?        @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role           @default(USER)
+  projects      Project[]
+  shares        ProjectShare[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Project {
+  id          String           @id @default(cuid())
+  name        String
+  description String?
+  thumbnail   String?
+  isPublic    Boolean          @default(false)
+  settings    Json             @default("{}") // units, grid, snap, theme settings
+  data        Json             // entire project architectural schema snapshot (floors, walls, furniture, materials, lighting)
+  userId      String?
+  user        User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  versions    ProjectVersion[]
+  shares      ProjectShare[]
+  floors      Floor[]
+  materials   Material[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([userId])
+}
+
+model ProjectVersion {
+  id          String   @id @default(cuid())
+  versionNum  Int
+  label       String?
+  snapshot    Json
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@index([projectId])
+}
+
+model Floor {
+  id          String   @id @default(cuid())
+  level       Int      @default(0)
+  name        String   @default("Ground Floor")
+  elevation   Float    @default(0.0) // meters
+  height      Float    @default(2.8) // meters
+  data        Json     // floor-specific elements (walls, rooms, doors, windows, furniture)
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([projectId])
+}
+
+model AssetCategory {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  icon      String?
+  order     Int      @default(0)
+  assets    Asset[]
+  createdAt DateTime @default(now())
+}
+
+model Asset {
+  id          String         @id @default(cuid())
+  name        String
+  categoryId  String
+  category    AssetCategory  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  dimensions  Json           // { width, depth, height }
+  modelUrl    String?
+  previewUrl  String?
+  defaultProps Json          @default("{}")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([categoryId])
+}
+
+model Material {
+  id          String   @id @default(cuid())
+  name        String
+  color       String   @default("#ffffff")
+  roughness   Float    @default(0.5)
+  metalness   Float    @default(0.1)
+  textureUrl  String?
+  category    String   @default("General") // Wood, Concrete, Tile, Fabric, Glass, Metal
+  projectId   String?
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([projectId])
+}
+
+model ProjectShare {
+  id         String          @id @default(cuid())
+  projectId  String
+  project    Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId     String?
+  user       User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  inviteEmail String?
+  permission SharePermission @default(VIEW)
+  createdAt  DateTime        @default(now())
+
+  @@index([projectId])
+  @@index([userId])
+}
