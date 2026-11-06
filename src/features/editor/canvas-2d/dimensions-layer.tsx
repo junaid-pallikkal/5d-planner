@@ -39,7 +39,7 @@ export const DimensionsLayer: React.FC<DimensionsLayerProps> = ({
         const textPos = CoordinateService.worldToScreen(layout.textPos, transform, baseScale);
 
         const isSelected = selectedId === dim.id;
-        const color = isSelected ? "#2563eb" : "#f59e0b";
+        const color = isSelected ? "#16a34a" : "#f59e0b";
         const labelText = dim.text || DimensionService.formatDistance(layout.length, unit);
 
         return (

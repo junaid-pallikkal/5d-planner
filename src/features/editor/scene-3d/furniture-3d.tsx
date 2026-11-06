@@ -100,7 +100,7 @@ function renderProceduralModel(
   h: number,
   isSelected: boolean
 ) {
-  const highlightColor = isSelected ? "#3b82f6" : null;
+  const highlightColor = isSelected ? "#16a34a" : null;
 
   switch (item.category) {
     case 'seating':

@@ -31,7 +31,7 @@ export const WallMesh: React.FC<WallMeshProps> = ({
 
   // Material setup
   const materialDef = (materials || []).find((m) => m.id === wall.interiorMaterialId) || materials?.[0];
-  const wallColor = isSelected ? "#3b82f6" : materialDef?.color || "#f8fafc";
+  const wallColor = isSelected ? "#16a34a" : materialDef?.color || "#f8fafc";
   const roughness = materialDef?.roughness ?? 0.8;
   const metalness = materialDef?.metalness ?? 0.05;
 

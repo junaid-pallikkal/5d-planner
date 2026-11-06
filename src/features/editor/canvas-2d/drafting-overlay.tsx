@@ -42,14 +42,14 @@ export const DraftingOverlay: React.FC<DraftingOverlayProps> = ({
                 {/* Thickened preview */}
                 <Line
                   points={[p1.x, p1.y, p2.x, p2.y]}
-                  stroke="#3b82f6"
+                  stroke="#16a34a"
                   strokeWidth={0.2 * transform.scale * baseScale}
                   opacity={0.5}
                 />
                 {/* Centerline */}
                 <Line
                   points={[p1.x, p1.y, p2.x, p2.y]}
-                  stroke="#60a5fa"
+                  stroke="#4ade80"
                   strokeWidth={2}
                   dash={[4, 4]}
                 />
@@ -60,7 +60,7 @@ export const DraftingOverlay: React.FC<DraftingOverlayProps> = ({
                     fontSize={11}
                     fontFamily="monospace"
                     fontStyle="bold"
-                    fill="#3b82f6"
+                    fill="#16a34a"
                     align="center"
                     offsetX={40}
                     width={80}

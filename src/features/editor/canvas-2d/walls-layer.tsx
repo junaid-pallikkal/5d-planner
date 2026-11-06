@@ -44,7 +44,7 @@ export const WallsLayer: React.FC<WallsLayerProps> = ({
               points={screenPoly}
               closed
               fill={wall.isExterior ? "#1e293b" : "#334155"}
-              stroke={isSelected ? "#2563eb" : "#0f172a"}
+              stroke={isSelected ? "#16a34a" : "#0f172a"}
               strokeWidth={isSelected ? 2 : 1}
               onClick={() => onSelectWall(wall.id)}
               onTap={() => onSelectWall(wall.id)}
@@ -53,7 +53,7 @@ export const WallsLayer: React.FC<WallsLayerProps> = ({
             {/* Wall Centerline */}
             <Line
               points={[startScreen.x, startScreen.y, endScreen.x, endScreen.y]}
-              stroke={isSelected ? "#2563eb" : "rgba(100, 116, 139, 0.4)"}
+              stroke={isSelected ? "#16a34a" : "rgba(100, 116, 139, 0.4)"}
               strokeWidth={0.8}
               dash={[3, 3]}
               listening={false}
@@ -66,7 +66,7 @@ export const WallsLayer: React.FC<WallsLayerProps> = ({
                   x={startScreen.x}
                   y={startScreen.y}
                   radius={6}
-                  fill="#2563eb"
+                  fill="#16a34a"
                   stroke="#ffffff"
                   strokeWidth={2}
                   draggable
@@ -85,7 +85,7 @@ export const WallsLayer: React.FC<WallsLayerProps> = ({
                   x={endScreen.x}
                   y={endScreen.y}
                   radius={6}
-                  fill="#2563eb"
+                  fill="#16a34a"
                   stroke="#ffffff"
                   strokeWidth={2}
                   draggable

@@ -50,7 +50,7 @@ export const GridLayer: React.FC<GridLayerProps> = ({
   // Ultra-delicate architectural CAD grid
   const minorColor = "#E9EDF3";
   const majorColor = "#D1D5DB";
-  const axisColor = "rgba(37, 99, 235, 0.45)";
+  const axisColor = "rgba(22, 163, 74, 0.45)";
 
   // Vertical grid lines
   for (let x = startGridX; x <= endGridX; x += gridSize) {
@@ -100,7 +100,7 @@ export const GridLayer: React.FC<GridLayerProps> = ({
         x={originScreen.x}
         y={originScreen.y}
         radius={3}
-        fill="#3b82f6"
+        fill="#16a34a"
         stroke="rgba(255,255,255,0.8)"
         strokeWidth={1}
       />

@@ -42,9 +42,9 @@ export const RoomsLayer: React.FC<RoomsLayerProps> = ({
             <Line
               points={flatPoints}
               closed
-              fill={room.color || "#2563eb"}
+              fill={room.color || "#16a34a"}
               opacity={isSelected ? 0.22 : 0.08}
-              stroke={isSelected ? "#2563eb" : room.color || "#3b82f6"}
+              stroke={isSelected ? "#16a34a" : room.color || "#16a34a"}
               strokeWidth={isSelected ? 2 : 1}
               dash={isSelected ? [4, 4] : undefined}
               onClick={() => onSelectRoom(room.id)}

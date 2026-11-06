@@ -113,7 +113,7 @@ export const TopBar: React.FC = () => {
           className="flex items-center space-x-2 text-foreground hover:opacity-80 transition-opacity"
           title="Back to Dashboard"
         >
-          <div className="h-6 w-6 rounded bg-[#2563EB] text-white flex items-center justify-center font-bold text-[11px] tracking-wider shadow-sm">
+          <div className="h-6 w-6 rounded bg-[#16A34A] text-white flex items-center justify-center font-bold text-[11px] tracking-wider shadow-sm">
             5D
           </div>
         </Link>
@@ -301,7 +301,7 @@ export const TopBar: React.FC = () => {
               }}
               className="space-x-2 text-xs"
             >
-              <Download className="h-3.5 w-3.5 text-blue-500" />
+              <Download className="h-3.5 w-3.5 text-emerald-600" />
               <span>5D Project Backup (.5darch)</span>
             </DropdownMenuItem>
           </DropdownMenuContent>

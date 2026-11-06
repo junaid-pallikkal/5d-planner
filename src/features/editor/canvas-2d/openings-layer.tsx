@@ -57,7 +57,7 @@ export const OpeningsLayer: React.FC<OpeningsLayerProps> = ({
               width={doorWidthPx}
               height={wall.thickness * pixelsPerMeter}
               fill="#ffffff"
-              stroke={isSelected ? "#2563eb" : "#d97706"}
+              stroke={isSelected ? "#16a34a" : "#d97706"}
               strokeWidth={isSelected ? 1.8 : 1}
             />
 
@@ -69,7 +69,7 @@ export const OpeningsLayer: React.FC<OpeningsLayerProps> = ({
                 -doorWidthPx / 2,
                 -doorWidthPx,
               ]}
-              stroke={isSelected ? "#2563eb" : "#b45309"}
+              stroke={isSelected ? "#16a34a" : "#b45309"}
               strokeWidth={1.8}
             />
 
@@ -81,7 +81,7 @@ export const OpeningsLayer: React.FC<OpeningsLayerProps> = ({
               outerRadius={doorWidthPx}
               angle={90}
               rotation={270}
-              stroke={isSelected ? "#2563eb" : "rgba(217, 119, 6, 0.5)"}
+              stroke={isSelected ? "#16a34a" : "rgba(217, 119, 6, 0.5)"}
               strokeWidth={1}
               dash={[3, 3]}
             />
@@ -116,21 +116,21 @@ export const OpeningsLayer: React.FC<OpeningsLayerProps> = ({
               width={winWidthPx}
               height={wall.thickness * pixelsPerMeter}
               fill="#ffffff"
-              stroke={isSelected ? "#2563eb" : "#0284c7"}
+              stroke={isSelected ? "#16a34a" : "#059669"}
               strokeWidth={isSelected ? 2 : 1}
             />
 
             {/* Center Glazing Line */}
             <Line
               points={[-winWidthPx / 2, 0, winWidthPx / 2, 0]}
-              stroke="#0284c7"
+              stroke="#059669"
               strokeWidth={2}
             />
 
             {/* Double glazing secondary line */}
             <Line
               points={[-winWidthPx / 2, -2, winWidthPx / 2, -2]}
-              stroke="#38bdf8"
+              stroke="#10b981"
               strokeWidth={1}
             />
           </Group>

@@ -46,7 +46,7 @@ export const Openings3D: React.FC<Openings3DProps> = ({
             <mesh position={[0, door.height / 2, 0]}>
               <boxGeometry args={[door.width + 0.08, door.height + 0.04, wall.thickness + 0.02]} />
               <meshStandardMaterial
-                color={isSelected ? "#2563eb" : "#334155"}
+                color={isSelected ? "#16a34a" : "#334155"}
                 roughness={0.4}
               />
             </mesh>
@@ -55,7 +55,7 @@ export const Openings3D: React.FC<Openings3DProps> = ({
             <mesh position={[0, door.height / 2, 0]} castShadow>
               <boxGeometry args={[door.width - 0.04, door.height - 0.04, 0.04]} />
               <meshStandardMaterial
-                color={isSelected ? "#3b82f6" : "#5c4033"}
+                color={isSelected ? "#16a34a" : "#5c4033"}
                 roughness={0.5}
               />
             </mesh>
@@ -97,7 +97,7 @@ export const Openings3D: React.FC<Openings3DProps> = ({
             <mesh>
               <boxGeometry args={[win.width, win.height, wall.thickness + 0.01]} />
               <meshStandardMaterial
-                color={isSelected ? "#2563eb" : "#1e293b"}
+                color={isSelected ? "#16a34a" : "#1e293b"}
                 metalness={0.8}
                 roughness={0.3}
               />
@@ -107,7 +107,7 @@ export const Openings3D: React.FC<Openings3DProps> = ({
             <mesh position={[0, 0, 0]}>
               <boxGeometry args={[win.width - 0.08, win.height - 0.08, 0.02]} />
               <meshPhysicalMaterial
-                color="#bae6fd"
+                color="#bbf7d0"
                 transmission={0.9}
                 opacity={0.4}
                 transparent

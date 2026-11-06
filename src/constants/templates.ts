@@ -68,7 +68,7 @@ export const TEMPLATE_MINIMALIST_VILLA: ProjectDocument = {
           floorId: 'floor_ground',
           name: 'Living & Dining Great Room',
           type: 'living',
-          color: '#3b82f6',
+          color: '#16a34a',
           polygon: [{ x: 0, y: 0 }, { x: 5, y: 0 }, { x: 5, y: 7 }, { x: 0, y: 7 }],
           area: 35.0,
           perimeter: 24.0,

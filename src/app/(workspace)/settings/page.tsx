@@ -38,7 +38,7 @@ export default function GlobalSettingsPage() {
         {/* Theme Settings */}
         <div className="p-5 rounded-xl border border-[#E5E7EB] bg-white shadow-sm space-y-3">
           <div className="flex items-center space-x-2">
-            <Palette className="h-4 w-4 text-[#2563EB]" />
+            <Palette className="h-4 w-4 text-[#16A34A]" />
             <h2 className="text-xs font-semibold uppercase tracking-wider text-[#6B7280]">Appearance Theme</h2>
           </div>
           <p className="text-xs text-[#6B7280]">
@@ -48,7 +48,7 @@ export default function GlobalSettingsPage() {
             <Button
               variant="default"
               size="sm"
-              className="bg-[#2563EB] text-white"
+              className="bg-[#16A34A] text-white hover:bg-[#15803D]"
             >
               <CheckCircle className="h-3.5 w-3.5 mr-1" />
               Architectural Light

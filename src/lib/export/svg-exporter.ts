@@ -33,9 +33,9 @@ export class SvgExporter {
     let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgWidth} ${svgHeight}" width="${svgWidth}" height="${svgHeight}">\n`;
     svg += `  <style>
     .wall { fill: #1e293b; stroke: #0f172a; stroke-width: 1.5; }
-    .room { fill: #3b82f6; fill-opacity: 0.12; stroke: #3b82f6; stroke-dasharray: 4,4; stroke-width: 1; }
+    .room { fill: #16a34a; fill-opacity: 0.12; stroke: #16a34a; stroke-dasharray: 4,4; stroke-width: 1; }
     .door { stroke: #ea580c; stroke-width: 2; fill: none; }
-    .window { stroke: #0284c7; stroke-width: 3; stroke-linecap: round; }
+    .window { stroke: #059669; stroke-width: 3; stroke-linecap: round; }
     .text-room { font-family: sans-serif; font-size: 13px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
     .text-dim { font-family: monospace; font-size: 11px; fill: #64748b; text-anchor: middle; }
   </style>\n`;

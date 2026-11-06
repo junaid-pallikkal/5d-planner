@@ -69,10 +69,10 @@ export const FurnitureLayer: React.FC<FurnitureLayerProps> = ({
               height={dPx}
               cornerRadius={3}
               fill="#ffffff"
-              stroke={isSelected ? "#2563eb" : "#94a3b8"}
+              stroke={isSelected ? "#16a34a" : "#94a3b8"}
               strokeWidth={isSelected ? 2 : 1}
               shadowBlur={isSelected ? 6 : 2}
-              shadowColor={isSelected ? "rgba(37, 99, 235, 0.3)" : "rgba(0, 0, 0, 0.05)"}
+              shadowColor={isSelected ? "rgba(22, 163, 74, 0.3)" : "rgba(0, 0, 0, 0.05)"}
             />
 
             {/* Architectural Furniture Details by Category */}
@@ -156,8 +156,8 @@ export const FurnitureLayer: React.FC<FurnitureLayerProps> = ({
                   onUpdateFurnitureRot(item.id, angle);
                 }}
               >
-                <Line points={[0, 0, 0, 16]} stroke="#2563eb" strokeWidth={1.5} />
-                <Circle radius={5} fill="#2563eb" stroke="#ffffff" strokeWidth={1.5} />
+                <Line points={[0, 0, 0, 16]} stroke="#16a34a" strokeWidth={1.5} />
+                <Circle radius={5} fill="#16a34a" stroke="#ffffff" strokeWidth={1.5} />
               </Group>
             )}
           </Group>

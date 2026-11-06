@@ -148,7 +148,7 @@ export const SceneCanvas: React.FC = () => {
           </mesh>
 
           {/* Ground Grid Helper */}
-          <gridHelper args={[50, 50, "#2563eb", "#cbd5e1"]} position={[0, -0.01, 0]} />
+          <gridHelper args={[50, 50, "#16a34a", "#cbd5e1"]} position={[0, -0.01, 0]} />
 
           {/* Render All Floors (Multi-Floor Architecture) */}
           {(project?.floors || []).map((floor) => {

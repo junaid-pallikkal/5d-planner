@@ -260,7 +260,7 @@ export const PropertiesPanel: React.FC = () => {
         <div>
           <label className="text-[9px] text-muted-foreground uppercase font-mono">Accent Color</label>
           <div className="flex items-center space-x-1.5 mt-1">
-            {['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#64748b'].map((c) => (
+            {['#16a34a', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#059669', '#64748b'].map((c) => (
               <div
                 key={c}
                 onClick={() => updateRoom(room.id, { color: c })}

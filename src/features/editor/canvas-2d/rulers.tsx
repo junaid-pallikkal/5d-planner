@@ -97,7 +97,7 @@ export const Rulers: React.FC<RulersProps> = ({
         {topTicks}
         {cursorPos && (
           <div
-            className="absolute top-0 bottom-0 w-[1px] bg-[#2563EB] z-20"
+            className="absolute top-0 bottom-0 w-[1px] bg-[#16A34A] z-20"
             style={{ left: `${cursorPos.x}px` }}
           />
         )}
@@ -111,7 +111,7 @@ export const Rulers: React.FC<RulersProps> = ({
         {leftTicks}
         {cursorPos && (
           <div
-            className="absolute left-0 right-0 h-[1px] bg-[#2563EB] z-20"
+            className="absolute left-0 right-0 h-[1px] bg-[#16A34A] z-20"
             style={{ top: `${cursorPos.y}px` }}
           />
         )}

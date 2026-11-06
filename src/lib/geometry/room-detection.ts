@@ -240,7 +240,7 @@ export class RoomDetectionService {
 
     // Default room names generator
     const roomTypes: RoomData['type'][] = ['living', 'bedroom', 'kitchen', 'bathroom', 'dining', 'office'];
-    const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'];
+    const colors = ['#16a34a', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#059669'];
 
     return cycles.map((c, idx) => {
       const type = roomTypes[idx % roomTypes.length];

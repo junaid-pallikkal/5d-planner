@@ -61,7 +61,7 @@ export const DEFAULT_MATERIALS: MaterialDef[] = [
     id: 'mat_glass_clear',
     name: 'Architectural Glazing',
     category: 'glass',
-    color: '#93c5fd',
+    color: '#86efac',
     roughness: 0.05,
     metalness: 0.95,
   },
