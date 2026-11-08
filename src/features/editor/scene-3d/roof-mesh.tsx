@@ -47,6 +47,7 @@ const SingleRoofMesh: React.FC<SingleRoofMeshProps> = ({
   isSelected,
   onSelect,
 }) => {
+  if (roof.type === 'none') return null;
   const {
     type = 'gable',
     polygon = [],

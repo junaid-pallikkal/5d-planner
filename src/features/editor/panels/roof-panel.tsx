@@ -20,6 +20,7 @@ import {
   Zap,
   ShieldCheck,
   Compass,
+  Ban,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -38,6 +39,19 @@ interface RoofPreset {
 }
 
 const ROOF_PRESETS: RoofPreset[] = [
+  {
+    id: "none",
+    title: "No Roof (Open-Air)",
+    desc: "Uncovered open layout for courtyards, terraces & unobstructed 3D interior drafting",
+    pitch: 0,
+    overhang: 0,
+    thickness: 0,
+    parapet: 0,
+    color: "#94a3b8",
+    hasSolar: false,
+    hasTrusses: false,
+    iconBg: "bg-slate-100 text-slate-500",
+  },
   {
     id: "gable",
     title: "Alpine Gable",
@@ -165,7 +179,9 @@ export const RoofPanel: React.FC = () => {
   // Active roof on current floor
   const roofs = activeFloor?.roofs || [];
   const activeRoof: RoofData | undefined =
-    roofs.find((r) => r.id === primaryId) || roofs[0];
+    roofs.find((r) => r.id === primaryId && r.type !== "none") ||
+    roofs.find((r) => r.type !== "none");
+  const hasNoRoof = !activeRoof || activeRoof.type === "none";
 
   // Civil Engineering Calculations
   const metrics = useMemo(() => {
@@ -231,6 +247,12 @@ export const RoofPanel: React.FC = () => {
   }, [activeRoof]);
 
   const handleApplyPreset = (preset: RoofPreset) => {
+    if (preset.id === "none") {
+      generateAutoRoof("none");
+      toast.info("Removed roof (Open-air mode active)");
+      return;
+    }
+
     generateAutoRoof(preset.id, {
       pitch: preset.pitch,
       overhang: preset.overhang,
@@ -268,9 +290,27 @@ export const RoofPanel: React.FC = () => {
               ROOF DESIGNER & BIM
             </h2>
           </div>
-          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">
-            CIVIL BIM
-          </span>
+          <div className="flex items-center gap-1.5">
+            {hasNoRoof ? (
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-semibold border border-slate-200">
+                OPEN-AIR
+              </span>
+            ) : (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleApplyPreset(ROOF_PRESETS[0])}
+                className="h-5 px-1.5 text-[10px] text-slate-500 hover:text-red-600 hover:bg-red-50 flex items-center gap-1"
+                title="Remove roof and set to Open-Air"
+              >
+                <Ban className="h-3 w-3" />
+                <span>No Roof</span>
+              </Button>
+            )}
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">
+              CIVIL BIM
+            </span>
+          </div>
         </div>
         <p className="text-[11px] text-[#6B7280]">
           Parametric civil engineering roof modeling, structural trusses & stormwater calculation.
@@ -287,14 +327,14 @@ export const RoofPanel: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-2">
             {ROOF_PRESETS.map((p) => {
-              const isCurrent = activeRoof?.type === p.id;
+              const isCurrent = p.id === "none" ? hasNoRoof : (!hasNoRoof && activeRoof?.type === p.id);
               return (
                 <button
                   key={p.id}
                   onClick={() => handleApplyPreset(p)}
                   className={`p-2.5 rounded-lg border text-left transition-all relative ${
                     isCurrent
-                      ? "border-[#16A34A] bg-emerald-50/40 shadow-sm"
+                      ? "border-[#16A34A] bg-emerald-50/40 shadow-sm ring-1 ring-[#16A34A]/20"
                       : "border-[#E5E7EB] bg-white hover:border-[#16A34A]/50 hover:bg-[#F8FAFC]"
                   }`}
                 >
@@ -303,18 +343,23 @@ export const RoofPanel: React.FC = () => {
                       <Check className="h-2.5 w-2.5 stroke-[3]" />
                     </div>
                   )}
-                  <div className="font-semibold text-xs text-[#202124] tracking-tight">
-                    {p.title}
+                  <div className="font-semibold text-xs text-[#202124] tracking-tight flex items-center gap-1.5">
+                    {p.id === "none" && <Ban className="h-3 w-3 text-slate-500" />}
+                    <span>{p.title}</span>
                   </div>
                   <div className="text-[10px] text-[#6B7280] line-clamp-2 mt-0.5 leading-snug">
                     {p.desc}
                   </div>
                   <div className="mt-2 flex items-center justify-between text-[9px] font-mono text-[#6B7280]">
-                    <span>Pitch: {p.pitch}°</span>
-                    <span
-                      className="w-3 h-3 rounded-full border border-black/10 inline-block"
-                      style={{ backgroundColor: p.color }}
-                    />
+                    <span>{p.id === "none" ? "Elevation: Open" : `Pitch: ${p.pitch}°`}</span>
+                    {p.id === "none" ? (
+                      <span className="text-[9px] font-medium text-slate-400">Open-Air</span>
+                    ) : (
+                      <span
+                        className="w-3 h-3 rounded-full border border-black/10 inline-block shadow-xs"
+                        style={{ backgroundColor: p.color }}
+                      />
+                    )}
                   </div>
                 </button>
               );
@@ -322,8 +367,45 @@ export const RoofPanel: React.FC = () => {
           </div>
         </div>
 
+        {/* When No Roof is active */}
+        {hasNoRoof && (
+          <div className="p-4 rounded-xl border border-dashed border-[#E5E7EB] bg-[#F8FAFC] text-center space-y-2.5">
+            <div className="h-9 w-9 rounded-full bg-slate-100 text-slate-600 mx-auto flex items-center justify-center">
+              <Ban className="h-4 w-4" />
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-[#202124]">
+                Open-Air Story Active (No Roof)
+              </div>
+              <p className="text-[11px] text-[#6B7280] max-w-[260px] mx-auto mt-0.5 leading-relaxed">
+                This floor level has no structural roof, allowing open-air courtyards, terraces, and unobstructed 3D top-down interior inspection.
+              </p>
+            </div>
+            <div className="pt-1 flex justify-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => handleApplyPreset(ROOF_PRESETS.find((p) => p.id === "flat")!)}
+                className="h-7 text-xs border-[#16A34A]/30 text-[#16A34A] hover:bg-emerald-50"
+              >
+                <Sparkles className="h-3 w-3 mr-1" />
+                Add Modern Flat
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => handleApplyPreset(ROOF_PRESETS.find((p) => p.id === "gable")!)}
+                className="h-7 text-xs border-[#16A34A]/30 text-[#16A34A] hover:bg-emerald-50"
+              >
+                <Sparkles className="h-3 w-3 mr-1" />
+                Add Alpine Gable
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Parametric Engineering Sliders (when roof exists) */}
-        {activeRoof && (
+        {!hasNoRoof && activeRoof && (
           <div className="p-3.5 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-[#202124]">

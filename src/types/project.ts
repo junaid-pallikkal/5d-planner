@@ -99,6 +99,7 @@ export interface FurnitureData {
 }
 
 export type RoofType =
+  | 'none'
   | 'flat'
   | 'gable'
   | 'hip'

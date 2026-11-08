@@ -26,7 +26,7 @@ export const RoofLayer: React.FC<RoofLayerProps> = ({
   return (
     <Layer>
       {roofs.map((roof) => {
-        if (!roof.polygon || roof.polygon.length < 3) return null;
+        if (roof.type === 'none' || !roof.polygon || roof.polygon.length < 3) return null;
         const isSelected = selectedId === roof.id;
 
         // Convert polygon vertices to screen coordinates

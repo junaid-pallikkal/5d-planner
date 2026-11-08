@@ -854,6 +854,18 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     useHistoryStore.getState().pushSnapshot(current);
 
     const targetFloorId = floorId || current.activeFloorId;
+
+    // "none" option cleanly removes roof from active floor
+    if (type === 'none') {
+      const updatedFloors = current.floors.map((f) =>
+        f.id === targetFloorId ? { ...f, roofs: [] } : f
+      );
+      const updated: ProjectDocument = { ...current, floors: updatedFloors };
+      set({ project: updated });
+      scheduleAutosave(updated, (saving) => set({ isSaving: saving }));
+      return '';
+    }
+
     const floor = current.floors.find((f) => f.id === targetFloorId) || current.floors[0];
 
     // Compute bounding footprint of building envelope from walls or rooms
