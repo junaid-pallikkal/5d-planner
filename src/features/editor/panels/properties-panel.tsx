@@ -3,9 +3,10 @@
 import React from "react";
 import { useProjectStore } from "@/stores/project-store";
 import { useSelectionStore } from "@/stores/selection-store";
+import { useUIStore } from "@/stores/ui-store";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Trash2, Sliders, Box, Layers, Ruler } from "lucide-react";
+import { Trash2, Sliders, Box, Layers, Ruler, Home } from "lucide-react";
 import { WallMath } from "@/lib/geometry/wall-math";
 
 export const PropertiesPanel: React.FC = () => {
@@ -19,6 +20,8 @@ export const PropertiesPanel: React.FC = () => {
   const updateRoom = useProjectStore((s) => s.updateRoom);
   const updateFurniture = useProjectStore((s) => s.updateFurniture);
   const deleteFurniture = useProjectStore((s) => s.deleteFurniture);
+  const updateRoof = useProjectStore((s) => s.updateRoof);
+  const deleteRoof = useProjectStore((s) => s.deleteRoof);
 
   const primaryId = useSelectionStore((s) => s.primaryId);
   const selectedType = useSelectionStore((s) => s.selectedType);
@@ -358,6 +361,99 @@ export const PropertiesPanel: React.FC = () => {
             className="w-full accent-primary mt-1"
           />
         </div>
+      </div>
+    );
+  }
+
+  // 5. Roof Properties
+  if (selectedType === 'roof') {
+    const roof = (floor?.roofs || []).find((r) => r.id === primaryId);
+    if (!roof) return null;
+
+    return (
+      <div className="p-3 flex flex-col space-y-3.5 select-none text-xs">
+        <div className="flex items-center justify-between pb-2 border-b border-border/40">
+          <div className="flex items-center space-x-1.5 font-semibold">
+            <Home className="h-3.5 w-3.5 text-primary" />
+            <span>{roof.name || `${roof.type.toUpperCase()} Roof`}</span>
+          </div>
+          <Button
+            variant="ghost"
+            size="cadIcon"
+            onClick={() => {
+              deleteRoof(roof.id);
+              clearSelection();
+            }}
+            className="text-muted-foreground hover:text-destructive h-6 w-6"
+            title="Delete Roof"
+          >
+            <Trash2 className="h-3 w-3" />
+          </Button>
+        </div>
+
+        <div className="space-y-1">
+          <label className="text-[9px] text-muted-foreground uppercase font-mono">Roof Type</label>
+          <div className="font-semibold text-[#202124] capitalize">{roof.type} Roof</div>
+        </div>
+
+        {roof.type !== 'flat' && roof.type !== 'green' && (
+          <div className="space-y-1">
+            <div className="flex justify-between text-[10px]">
+              <span className="text-muted-foreground">Pitch Angle</span>
+              <span className="font-mono font-bold">{roof.pitch.toFixed(0)}°</span>
+            </div>
+            <input
+              type="range"
+              min="5"
+              max="60"
+              value={roof.pitch}
+              onChange={(e) => updateRoof(roof.id, { pitch: parseFloat(e.target.value) })}
+              className="w-full accent-primary"
+            />
+          </div>
+        )}
+
+        <div className="space-y-1">
+          <div className="flex justify-between text-[10px]">
+            <span className="text-muted-foreground">Eaves Overhang</span>
+            <span className="font-mono font-bold">{(roof.overhang * 1000).toFixed(0)} mm</span>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="1200"
+            step="50"
+            value={roof.overhang * 1000}
+            onChange={(e) => updateRoof(roof.id, { overhang: parseFloat(e.target.value) / 1000 })}
+            className="w-full accent-primary"
+          />
+        </div>
+
+        <div className="space-y-1">
+          <div className="flex justify-between text-[10px]">
+            <span className="text-muted-foreground">Thickness (Depth)</span>
+            <span className="font-mono font-bold">{(roof.thickness * 1000).toFixed(0)} mm</span>
+          </div>
+          <input
+            type="range"
+            min="150"
+            max="450"
+            step="10"
+            value={roof.thickness * 1000}
+            onChange={(e) => updateRoof(roof.id, { thickness: parseFloat(e.target.value) / 1000 })}
+            className="w-full accent-primary"
+          />
+        </div>
+
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => useUIStore.getState().setActivePanel('roof')}
+          className="w-full text-xs space-x-1.5 border-[#16A34A]/40 text-[#16A34A] hover:bg-emerald-50 mt-2"
+        >
+          <Home className="h-3 w-3" />
+          <span>Open Full Roof Designer & BIM</span>
+        </Button>
       </div>
     );
   }

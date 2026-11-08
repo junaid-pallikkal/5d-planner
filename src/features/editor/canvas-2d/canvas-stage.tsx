@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useCallback, useEffect } from "react";
+import React, { useRef, useState, useCallback, useEffect, useMemo } from "react";
 import { Stage } from "react-konva";
 import type Konva from "konva";
 import { useProjectStore } from "@/stores/project-store";
@@ -11,6 +11,7 @@ import { RoomsLayer } from "./rooms-layer";
 import { WallsLayer } from "./walls-layer";
 import { OpeningsLayer } from "./openings-layer";
 import { FurnitureLayer } from "./furniture-layer";
+import { RoofLayer } from "./roof-layer";
 import { DimensionsLayer } from "./dimensions-layer";
 import { DraftingOverlay } from "./drafting-overlay";
 import { Rulers } from "./rulers";
@@ -26,6 +27,7 @@ export const CanvasStage: React.FC = () => {
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
   const [activeSnap, setActiveSnap] = useState<SnapResult | null>(null);
   const [isPanning, setIsPanning] = useState(false);
+  const [isSpaceDown, setIsSpaceDown] = useState(false);
   const panStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   // Store subscriptions
@@ -36,6 +38,7 @@ export const CanvasStage: React.FC = () => {
   const doors = activeFloor?.doors || [];
   const windows = activeFloor?.windows || [];
   const furniture = activeFloor?.furniture || [];
+  const roofs = activeFloor?.roofs || [];
   const dimensionsList = activeFloor?.dimensions || [];
   const addWall = useProjectStore((s) => s.addWall);
   const updateWall = useProjectStore((s) => s.updateWall);
@@ -191,8 +194,8 @@ export const CanvasStage: React.FC = () => {
       const pointer = stage.getPointerPosition();
       if (!pointer) return;
 
-      // Middle click or Pan tool initiates viewport pan
-      if (e.evt.button === 1 || tool === 'pan') {
+      // Middle click, Pan tool, or Spacebar drag initiates viewport pan
+      if (e.evt.button === 1 || tool === 'pan' || isSpaceDown) {
         setIsPanning(true);
         panStartRef.current = pointer;
         return;
@@ -352,31 +355,69 @@ export const CanvasStage: React.FC = () => {
     setIsPanning(false);
   }, []);
 
-  // Keyboard escape cancels current drafting
+  // Spacebar pan and Escape key listeners
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) {
+        return;
+      }
+      if (e.code === 'Space' && !e.repeat) {
+        e.preventDefault();
+        setIsSpaceDown(true);
+      }
       if (e.key === 'Escape') {
         setWallDraft(null, null);
         setMeasureDraft(null, null);
         clearSelection();
       }
     };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.code === 'Space') {
+        setIsSpaceDown(false);
+        if (tool !== 'pan') {
+          setIsPanning(false);
+        }
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [setWallDraft, setMeasureDraft, clearSelection]);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [tool, setWallDraft, setMeasureDraft, clearSelection]);
+
+  const cursorStyle = useMemo(() => {
+    if (isPanning) return 'grabbing';
+    if (isSpaceDown || tool === 'pan') return 'grab';
+    if (tool === 'wall' || tool === 'measure' || tool === 'dimension' || tool === 'roof') return 'crosshair';
+    if (tool === 'door' || tool === 'window') return 'crosshair';
+    return 'default';
+  }, [isPanning, isSpaceDown, tool]);
+
+  const cursorWorld = useMemo(() => {
+    if (!cursorPos) return null;
+    return CoordinateService.screenToWorld(cursorPos, viewportTransform, baseScale);
+  }, [cursorPos, viewportTransform, baseScale]);
+
+  const draftingMetrics = useMemo(() => {
+    if (!wallDraftStart || !wallDraftCurrent) return null;
+    const len = Vector2DMath.distance(wallDraftStart, wallDraftCurrent);
+    const angle = (Math.atan2(wallDraftCurrent.y - wallDraftStart.y, wallDraftCurrent.x - wallDraftStart.x) * 180) / Math.PI;
+    const normAngle = ((angle % 360) + 360) % 360;
+    return {
+      length: len,
+      angle: normAngle,
+    };
+  }, [wallDraftStart, wallDraftCurrent]);
 
   return (
     <div
       ref={containerRef}
       className="relative w-full h-full overflow-hidden bg-[#F7F8FA] select-none"
-      style={{
-        cursor:
-          tool === 'pan' || isPanning
-            ? 'grab'
-            : tool === 'wall' || tool === 'measure' || tool === 'dimension'
-            ? 'crosshair'
-            : 'default',
-      }}
+      style={{ cursor: cursorStyle }}
     >
       <Rulers
         transform={viewportTransform}
@@ -448,6 +489,14 @@ export const CanvasStage: React.FC = () => {
           }
         />
 
+        {/* Parametric Civil Roof Plan Layer */}
+        <RoofLayer
+          roofs={roofs}
+          transform={viewportTransform}
+          selectedId={selectedPrimaryId}
+          onSelectRoof={(id) => select(id, 'roof')}
+        />
+
         {/* CAD Dimensions */}
         <DimensionsLayer
           dimensions={dimensionsList}
@@ -467,6 +516,64 @@ export const CanvasStage: React.FC = () => {
           transform={viewportTransform}
         />
       </Stage>
+
+      {/* Precision CAD Status Bar HUD */}
+      <div className="absolute bottom-2.5 left-16 right-3 pointer-events-none flex items-center justify-between z-20 text-[11px] font-mono select-none">
+        {/* Left: Coordinates & Drafting Info */}
+        <div className="pointer-events-auto flex items-center space-x-2 bg-white/95 backdrop-blur-md px-3 py-1 rounded-lg border border-[#E5E7EB] shadow-sm text-[#202124]">
+          <div className="flex items-center space-x-1.5">
+            <span className="text-[#16A34A] font-bold">X:</span>
+            <span className="font-semibold">{cursorWorld ? cursorWorld.x.toFixed(2) : "0.00"}m</span>
+            <span className="text-[#6B7280] text-[9px]">({cursorWorld ? (cursorWorld.x * 1000).toFixed(0) : "0"}mm)</span>
+          </div>
+          <span className="text-[#E5E7EB]">|</span>
+          <div className="flex items-center space-x-1.5">
+            <span className="text-[#16A34A] font-bold">Y:</span>
+            <span className="font-semibold">{cursorWorld ? cursorWorld.y.toFixed(2) : "0.00"}m</span>
+            <span className="text-[#6B7280] text-[9px]">({cursorWorld ? (cursorWorld.y * 1000).toFixed(0) : "0"}mm)</span>
+          </div>
+
+          {draftingMetrics && (
+            <>
+              <span className="text-[#E5E7EB]">|</span>
+              <div className="flex items-center space-x-1.5 text-[#16A34A] font-semibold">
+                <span>L: {draftingMetrics.length.toFixed(2)}m</span>
+                <span className="text-[#6B7280]">∠ {draftingMetrics.angle.toFixed(1)}°</span>
+              </div>
+            </>
+          )}
+
+          {activeSnap && activeSnap.snapped && (
+            <>
+              <span className="text-[#E5E7EB]">|</span>
+              <div className="flex items-center space-x-1 text-emerald-600 font-semibold text-[10px]">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span>{activeSnap.snapType?.toUpperCase()} SNAP</span>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Right: Scale, Zoom & Level info */}
+        <div className="pointer-events-auto flex items-center space-x-2 bg-white/95 backdrop-blur-md px-3 py-1 rounded-lg border border-[#E5E7EB] shadow-sm text-[#6B7280]">
+          <span className="hidden sm:inline text-[10px]">
+            {isSpaceDown ? "SPACE PAN" : "HOLD SPACE TO PAN"}
+          </span>
+          <span className="hidden sm:inline text-[#E5E7EB]">|</span>
+          <span>EL: {(activeFloor?.elevation || 0).toFixed(2)}m</span>
+          <span className="text-[#E5E7EB]">|</span>
+          <button
+            onClick={() => {
+              setZoom(1.0);
+              setPan({ x: 0, y: 0 });
+            }}
+            title="Reset Zoom (1:50)"
+            className="hover:text-[#202124] transition-colors font-semibold"
+          >
+            {Math.round(zoom * 100)}%
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

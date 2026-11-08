@@ -7,6 +7,7 @@ export type ToolMode =
   | 'door'
   | 'window'
   | 'room'
+  | 'roof'
   | 'furniture'
   | 'dimension'
   | 'measure'

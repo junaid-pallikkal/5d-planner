@@ -9,6 +9,8 @@ import {
   FurnitureData,
   LightData,
   DimensionData,
+  RoofData,
+  RoofType,
   FloorData,
 } from '@/types/project';
 import { TEMPLATE_MINIMALIST_VILLA } from '@/constants/templates';
@@ -64,6 +66,12 @@ interface ProjectState {
   // Dimensions
   addDimension: (dim: Omit<DimensionData, 'id' | 'floorId'>) => string;
   deleteDimension: (id: string) => void;
+
+  // Roofs
+  addRoof: (roof: Omit<RoofData, 'id' | 'floorId'>, floorId?: string) => string;
+  updateRoof: (id: string, updates: Partial<RoofData>, floorId?: string) => void;
+  deleteRoof: (id: string, floorId?: string) => void;
+  generateAutoRoof: (type?: RoofType, options?: Partial<RoofData>, floorId?: string) => string;
 
   // Persistence
   saveNow: () => Promise<void>;
@@ -570,6 +578,182 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     const updated: ProjectDocument = { ...current, floors: updatedFloors };
     set({ project: updated });
     scheduleAutosave(updated, (saving) => set({ isSaving: saving }));
+  },
+
+  // Roof mutations
+  addRoof: (roofData, floorId) => {
+    const current = get().project;
+    useHistoryStore.getState().pushSnapshot(current);
+
+    const targetFloorId = floorId || current.activeFloorId;
+    const newId = `roof_${Date.now()}`;
+    const newRoof: RoofData = {
+      id: newId,
+      floorId: targetFloorId,
+      type: roofData.type,
+      polygon: roofData.polygon,
+      name: roofData.name || `${roofData.type.toUpperCase()} Roof`,
+      pitch: roofData.pitch ?? 25,
+      overhang: roofData.overhang ?? 0.5,
+      thickness: roofData.thickness ?? 0.25,
+      fasciaDepth: roofData.fasciaDepth ?? 0.18,
+      parapetHeight: roofData.parapetHeight,
+      elevationOffset: roofData.elevationOffset,
+      ridgeOrientation: roofData.ridgeOrientation ?? 'longitudinal',
+      hasGutters: roofData.hasGutters ?? true,
+      hasSolarPanels: roofData.hasSolarPanels ?? false,
+      solarDensity: roofData.solarDensity ?? 0.6,
+      showTrusses: roofData.showTrusses ?? false,
+      trussType: roofData.trussType ?? 'none',
+      drainageSlope: roofData.drainageSlope ?? 1.5,
+      color: roofData.color,
+      materialId: roofData.materialId,
+    };
+
+    const updatedFloors = current.floors.map((f) =>
+      f.id === targetFloorId
+        ? { ...f, roofs: [...(f.roofs || []), newRoof] }
+        : f
+    );
+
+    const updated: ProjectDocument = { ...current, floors: updatedFloors };
+    set({ project: updated });
+    scheduleAutosave(updated, (saving) => set({ isSaving: saving }));
+    return newId;
+  },
+
+  updateRoof: (id, updates, floorId) => {
+    const current = get().project;
+    const targetFloorId = floorId || current.activeFloorId;
+
+    const updatedFloors = current.floors.map((f) =>
+      f.id === targetFloorId
+        ? {
+            ...f,
+            roofs: (f.roofs || []).map((r) => (r.id === id ? { ...r, ...updates } : r)),
+          }
+        : f
+    );
+
+    const updated: ProjectDocument = { ...current, floors: updatedFloors };
+    set({ project: updated });
+    scheduleAutosave(updated, (saving) => set({ isSaving: saving }));
+  },
+
+  deleteRoof: (id, floorId) => {
+    const current = get().project;
+    useHistoryStore.getState().pushSnapshot(current);
+
+    const targetFloorId = floorId || current.activeFloorId;
+    const updatedFloors = current.floors.map((f) =>
+      f.id === targetFloorId
+        ? { ...f, roofs: (f.roofs || []).filter((r) => r.id !== id) }
+        : f
+    );
+
+    const updated: ProjectDocument = { ...current, floors: updatedFloors };
+    set({ project: updated });
+    scheduleAutosave(updated, (saving) => set({ isSaving: saving }));
+  },
+
+  generateAutoRoof: (type = 'gable', options = {}, floorId) => {
+    const current = get().project;
+    useHistoryStore.getState().pushSnapshot(current);
+
+    const targetFloorId = floorId || current.activeFloorId;
+    const floor = current.floors.find((f) => f.id === targetFloorId) || current.floors[0];
+
+    // Compute bounding footprint of building envelope from walls or rooms
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    const walls = floor?.walls || [];
+    const rooms = floor?.rooms || [];
+
+    if (walls.length > 0) {
+      walls.forEach((w) => {
+        minX = Math.min(minX, w.start.x, w.end.x);
+        maxX = Math.max(maxX, w.start.x, w.end.x);
+        minY = Math.min(minY, w.start.y, w.end.y);
+        maxY = Math.max(maxY, w.start.y, w.end.y);
+      });
+    } else if (rooms.length > 0) {
+      rooms.forEach((r) => {
+        (r.polygon || []).forEach((pt) => {
+          minX = Math.min(minX, pt.x);
+          maxX = Math.max(maxX, pt.x);
+          minY = Math.min(minY, pt.y);
+          maxY = Math.max(maxY, pt.y);
+        });
+      });
+    } else {
+      minX = 0; maxX = 8; minY = 0; maxY = 6;
+    }
+
+    const overhang = options.overhang ?? (type === 'flat' || type === 'green' ? 0.2 : 0.5);
+    const polygon = [
+      { x: minX - overhang, y: minY - overhang },
+      { x: maxX + overhang, y: minY - overhang },
+      { x: maxX + overhang, y: maxY + overhang },
+      { x: minX - overhang, y: maxY + overhang },
+    ];
+
+    const defaultPitch =
+      type === 'flat' || type === 'green' ? 1.5 :
+      type === 'shed' ? 12 :
+      type === 'mansard' ? 55 :
+      type === 'gambrel' ? 50 :
+      type === 'vaulted' ? 22 :
+      type === 'hip' ? 25 : 30;
+
+    const defaultThickness =
+      type === 'green' ? 0.35 :
+      type === 'flat' ? 0.28 : 0.22;
+
+    const defaultParapet =
+      type === 'flat' ? 0.6 :
+      type === 'green' ? 0.5 : 0;
+
+    const defaultColor =
+      type === 'green' ? '#15803d' :
+      type === 'flat' ? '#64748b' :
+      type === 'gable' ? '#c2410c' :
+      type === 'hip' ? '#1e293b' :
+      type === 'shed' ? '#334155' :
+      type === 'vaulted' ? '#0d9488' : '#78350f';
+
+    const newId = `roof_${Date.now()}`;
+    const newRoof: RoofData = {
+      id: newId,
+      floorId: targetFloorId,
+      name: `${type.toUpperCase()} Roof`,
+      type,
+      pitch: defaultPitch,
+      overhang,
+      thickness: defaultThickness,
+      fasciaDepth: 0.18,
+      parapetHeight: defaultParapet,
+      ridgeOrientation: (maxX - minX) >= (maxY - minY) ? 'longitudinal' : 'transverse',
+      elevationOffset: floor?.height || 2.8,
+      polygon,
+      color: defaultColor,
+      hasSolarPanels: type === 'shed' || type === 'flat',
+      solarDensity: 0.7,
+      showTrusses: type === 'gable',
+      trussType: type === 'gable' ? 'king_post' : 'none',
+      hasGutters: type !== 'flat' && type !== 'green',
+      drainageSlope: 1.5,
+      ...options,
+    };
+
+    const updatedFloors = current.floors.map((f) =>
+      f.id === targetFloorId
+        ? { ...f, roofs: [newRoof] }
+        : f
+    );
+
+    const updated: ProjectDocument = { ...current, floors: updatedFloors };
+    set({ project: updated });
+    scheduleAutosave(updated, (saving) => set({ isSaving: saving }));
+    return newId;
   },
 
   saveNow: async () => {

@@ -17,6 +17,7 @@ import {
   Settings,
   HelpCircle,
   SunMedium,
+  Home,
 } from "lucide-react";
 import { ToolMode } from "@/types/editor";
 
@@ -63,6 +64,9 @@ export const LeftToolbar: React.FC = () => {
           break;
         case 't':
           togglePanel('materials');
+          break;
+        case 'r':
+          togglePanel('roof');
           break;
         case '?':
           setShortcutsModalOpen(true);
@@ -144,6 +148,23 @@ export const LeftToolbar: React.FC = () => {
           <TooltipContent side="right" className="text-[11px] py-1 px-2">
             <span>Materials & PBR</span>
             <span className="ml-1.5 opacity-60 font-mono text-[9px]">(T)</span>
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant={activePanel === "roof" ? "activeCad" : "ghost"}
+              size="cadIcon"
+              onClick={() => togglePanel("roof")}
+              className={activePanel === "roof" ? "text-primary" : "text-muted-foreground hover:text-foreground"}
+            >
+              <Home className="h-3.5 w-3.5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right" className="text-[11px] py-1 px-2">
+            <span>Roof Designer & Civil BIM</span>
+            <span className="ml-1.5 opacity-60 font-mono text-[9px]">(R)</span>
           </TooltipContent>
         </Tooltip>
 

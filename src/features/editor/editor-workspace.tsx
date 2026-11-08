@@ -7,6 +7,7 @@ import { LeftToolbar } from "./tools/left-toolbar";
 import { CatalogPanel } from "./panels/catalog-panel";
 import { PropertiesPanel } from "./panels/properties-panel";
 import { MaterialsPanel } from "./panels/materials-panel";
+import { RoofPanel } from "./panels/roof-panel";
 import { SettingsPanel } from "./panels/settings-panel";
 import { AIAssistantPanel } from "./panels/ai-assistant-panel";
 import { ShortcutsModal } from "./panels/shortcuts-modal";
@@ -111,6 +112,7 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({ projectId }) =
             {activePanel === "catalog" && <CatalogPanel />}
             {activePanel === "properties" && <PropertiesPanel />}
             {activePanel === "materials" && <MaterialsPanel />}
+            {activePanel === "roof" && <RoofPanel />}
             {activePanel === "settings" && <SettingsPanel />}
             {activePanel === "ai" && <AIAssistantPanel />}
           </aside>

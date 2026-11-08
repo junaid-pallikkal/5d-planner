@@ -49,7 +49,7 @@ export const Rulers: React.FC<RulersProps> = ({
         <div
           key={`tx_${x.toFixed(1)}`}
           className="absolute top-0 flex flex-col items-center pointer-events-none"
-          style={{ left: `${scX}px` }}
+          style={{ left: `${scX - rulerSize}px` }}
         >
           <div className="h-1.5 w-[1px] bg-gray-400" />
           <span className="text-[8px] font-mono text-[#6B7280] select-none -translate-x-1/2">
@@ -68,7 +68,7 @@ export const Rulers: React.FC<RulersProps> = ({
         <div
           key={`ty_${y.toFixed(1)}`}
           className="absolute left-0 flex items-center pointer-events-none"
-          style={{ top: `${scY}px` }}
+          style={{ top: `${scY - rulerSize}px` }}
         >
           <div className="w-1.5 h-[1px] bg-gray-400" />
           <span className="text-[8px] font-mono text-[#6B7280] select-none -rotate-90 origin-left ml-0.5">
@@ -95,10 +95,10 @@ export const Rulers: React.FC<RulersProps> = ({
         style={{ height: `${rulerSize}px` }}
       >
         {topTicks}
-        {cursorPos && (
+        {cursorPos && cursorPos.x >= rulerSize && (
           <div
             className="absolute top-0 bottom-0 w-[1px] bg-[#16A34A] z-20"
-            style={{ left: `${cursorPos.x}px` }}
+            style={{ left: `${cursorPos.x - rulerSize}px` }}
           />
         )}
       </div>
@@ -109,10 +109,10 @@ export const Rulers: React.FC<RulersProps> = ({
         style={{ width: `${rulerSize}px` }}
       >
         {leftTicks}
-        {cursorPos && (
+        {cursorPos && cursorPos.y >= rulerSize && (
           <div
             className="absolute left-0 right-0 h-[1px] bg-[#16A34A] z-20"
-            style={{ top: `${cursorPos.y}px` }}
+            style={{ top: `${cursorPos.y - rulerSize}px` }}
           />
         )}
       </div>

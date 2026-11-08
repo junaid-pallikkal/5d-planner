@@ -8,6 +8,7 @@ import { useSelectionStore } from "@/stores/selection-store";
 import { useCameraStore } from "@/stores/camera-store";
 import { WallMesh } from "./wall-mesh";
 import { FloorMesh } from "./floor-mesh";
+import { RoofMesh } from "./roof-mesh";
 import { Openings3D } from "./openings-3d";
 import { Furniture3D } from "./furniture-3d";
 import { Lighting3D } from "./lighting-3d";
@@ -200,6 +201,14 @@ export const SceneCanvas: React.FC = () => {
                       rotation: { x: 0, y: rotY, z: 0 },
                     });
                   }}
+                />
+
+                {/* 3D Parametric Civil Engineering Roofs */}
+                <RoofMesh
+                  roofs={floor.roofs || []}
+                  materials={project?.materials || []}
+                  selectedId={selectedPrimaryId}
+                  onSelect={(id) => select(id, 'roof')}
                 />
               </group>
             );

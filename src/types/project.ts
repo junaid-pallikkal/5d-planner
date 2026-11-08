@@ -98,16 +98,37 @@ export interface FurnitureData {
   modelUrl?: string;
 }
 
-export type RoofType = 'flat' | 'gable' | 'hip' | 'shed';
+export type RoofType =
+  | 'flat'
+  | 'gable'
+  | 'hip'
+  | 'shed'
+  | 'mansard'
+  | 'gambrel'
+  | 'vaulted'
+  | 'green';
 
 export interface RoofData {
   id: string;
   floorId: string;
   type: RoofType;
-  pitch: number; // degrees
-  overhang: number; // meters
-  polygon: Point2D[];
+  name?: string;
+  pitch: number; // degrees (e.g. 0 to 60)
+  overhang: number; // meters (e.g. 0.3 to 0.8)
+  thickness: number; // meters (structural rafter/slab depth, e.g. 0.25)
+  fasciaDepth: number; // meters (eaves fascia depth, e.g. 0.18)
+  parapetHeight?: number; // meters for flat / green roofs (e.g. 0.5 to 1.0)
+  ridgeOrientation?: 'longitudinal' | 'transverse';
+  elevationOffset?: number; // meters above floor level (defaults to floor ceiling height)
+  polygon: Point2D[]; // perimeter polygon in world coordinates (meters)
   materialId?: string;
+  color?: string;
+  hasSolarPanels?: boolean;
+  solarDensity?: number; // 0.2 to 1.0
+  showTrusses?: boolean;
+  trussType?: 'none' | 'king_post' | 'queen_post' | 'fink';
+  hasGutters?: boolean;
+  drainageSlope?: number; // % slope for flat roofs (e.g. 1.5% to 2.0%)
 }
 
 export type LightType = 'sun' | 'ambient' | 'point' | 'spot';
