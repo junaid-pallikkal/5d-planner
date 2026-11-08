@@ -49,6 +49,7 @@ export const TopBar: React.FC = () => {
   const activeFloor = useProjectStore((s) => s.getCurrentFloor());
   const setActiveFloorId = useProjectStore((s) => s.setActiveFloorId);
   const addFloor = useProjectStore((s) => s.addFloor);
+  const addUpperFloor = useProjectStore((s) => s.addUpperFloor);
   const updateMetadata = useProjectStore((s) => s.updateMetadata);
   const setProject = useProjectStore((s) => s.setProject);
 
@@ -61,6 +62,7 @@ export const TopBar: React.FC = () => {
   const redo = useHistoryStore((s) => s.redo);
 
   const togglePanel = useUIStore((s) => s.togglePanel);
+  const setActivePanel = useUIStore((s) => s.setActivePanel);
 
   const handleUndo = () => {
     const prev = undo(project);
@@ -146,34 +148,64 @@ export const TopBar: React.FC = () => {
             <Button variant="ghost" size="sm" className="h-7 px-2 space-x-1 text-xs font-mono font-normal text-muted-foreground hover:text-foreground">
               <Layers className="h-3 w-3 text-primary" />
               <span>{activeFloor?.name || "Ground Floor"}</span>
+              <span className="text-[10px] text-primary font-semibold">(+{activeFloor?.elevation || 0}m)</span>
               <ChevronDown className="h-2.5 w-2.5 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="center" className="w-44">
-            <DropdownMenuLabel className="text-[10px] uppercase font-mono">Floor Levels</DropdownMenuLabel>
-            {project.floors.map((floor) => (
-              <DropdownMenuItem
-                key={floor.id}
-                onClick={() => setActiveFloorId(floor.id)}
-                className="flex items-center justify-between text-xs"
-              >
-                <span>{floor.name}</span>
-                <span className="text-[10px] font-mono text-muted-foreground">
-                  +{floor.elevation}m
-                </span>
-              </DropdownMenuItem>
-            ))}
+          <DropdownMenuContent align="center" className="w-56">
+            <DropdownMenuLabel className="text-[10px] uppercase font-mono text-[#6B7280]">
+              Floor Stories ({project.floors.length})
+            </DropdownMenuLabel>
+            {project.floors.map((floor) => {
+              const isSelected = floor.id === activeFloor?.id;
+              return (
+                <DropdownMenuItem
+                  key={floor.id}
+                  onClick={() => {
+                    setActiveFloorId(floor.id);
+                    toast.info(`Switched to ${floor.name}`);
+                  }}
+                  className={`flex items-center justify-between text-xs cursor-pointer ${
+                    isSelected ? "font-semibold text-primary bg-primary/10" : ""
+                  }`}
+                >
+                  <span className="truncate">{floor.name}</span>
+                  <span className="text-[10px] font-mono text-muted-foreground ml-2">
+                    +{floor.elevation}m
+                  </span>
+                </DropdownMenuItem>
+              );
+            })}
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                const nextElev = project.floors.length * 2.8;
-                addFloor(`Level ${project.floors.length}`, nextElev);
-                toast.success(`Level ${project.floors.length} created`);
+                const newId = addUpperFloor({
+                  copyWallsFromFloorId: activeFloor?.id,
+                  copyOnlyExterior: true,
+                });
+                toast.success(`Upper story built tracing structural walls!`);
               }}
-              className="text-primary text-xs space-x-1.5"
+              className="text-primary text-xs space-x-1.5 cursor-pointer font-medium"
             >
               <Plus className="h-3 w-3" />
-              <span>Add Level</span>
+              <span>Add Story (Trace Lower Walls)</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                addUpperFloor();
+                toast.success(`Blank upper story created!`);
+              }}
+              className="text-xs space-x-1.5 cursor-pointer text-muted-foreground hover:text-foreground"
+            >
+              <Plus className="h-3 w-3 opacity-60" />
+              <span>Add Blank Upper Story</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => setActivePanel("floors")}
+              className="text-[11px] font-mono text-muted-foreground hover:text-foreground cursor-pointer"
+            >
+              <span>Manage Levels & Slabs (BIM)...</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

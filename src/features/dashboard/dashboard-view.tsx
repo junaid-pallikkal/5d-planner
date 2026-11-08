@@ -230,8 +230,8 @@ export const DashboardView: React.FC = () => {
                 </div>
 
                 <div className="flex items-center justify-between pt-3 mt-3 border-t border-[#E5E7EB] text-[10px] font-mono text-[#6B7280]">
-                  <span>{template.floors.length} Floor(s)</span>
-                  <span>{template.floors[0]?.rooms.length || 0} Rooms</span>
+                  <span>{template.floors.length} {template.floors.length === 1 ? "Story" : "Stories"}</span>
+                  <span>{template.floors.reduce((acc, f) => acc + (f.rooms?.length || 0), 0)} Rooms</span>
                 </div>
               </div>
             ))}

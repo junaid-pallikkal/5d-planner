@@ -6,7 +6,16 @@ import { useRouter } from "next/navigation";
 import { TEMPLATES_LIST } from "@/constants/templates";
 import { ProjectStorageService } from "@/lib/storage/project-storage";
 import { Button } from "@/components/ui/button";
-import { Compass, ArrowRight, ArrowLeft } from "lucide-react";
+import {
+  Compass,
+  ArrowRight,
+  ArrowLeft,
+  Building,
+  Home,
+  Coffee,
+  LayoutGrid,
+  Layers,
+} from "lucide-react";
 import { toast } from "sonner";
 
 export default function TemplatesPage() {
@@ -30,6 +39,25 @@ export default function TemplatesPage() {
     router.push(`/editor/${newId}`);
   };
 
+  const getTemplateBadge = (id: string) => {
+    switch (id) {
+      case "template_building":
+        return { label: "COMMERCIAL BIM · 2 STORIES", icon: Building, color: "bg-blue-50 text-blue-700 border-blue-200" };
+      case "template_flats":
+        return { label: "MULTI-UNIT · 2 FLATS", icon: Layers, color: "bg-purple-50 text-purple-700 border-purple-200" };
+      case "template_luxury_home":
+        return { label: "PREMIUM LUXURY ESTATE", icon: Home, color: "bg-amber-50 text-amber-700 border-amber-200" };
+      case "template_cafe":
+        return { label: "COMMERCIAL BISTRO & BAR", icon: Coffee, color: "bg-emerald-50 text-emerald-700 border-emerald-200" };
+      case "template_villa":
+        return { label: "MODERN RESIDENCE", icon: Home, color: "bg-emerald-50 text-emerald-700 border-emerald-200" };
+      case "template_studio":
+        return { label: "COMPACT CITY FLAT", icon: LayoutGrid, color: "bg-slate-50 text-slate-700 border-slate-200" };
+      default:
+        return { label: "BLANK CAD GRID", icon: Compass, color: "bg-gray-50 text-gray-700 border-gray-200" };
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#F7F8FA] text-[#202124] flex flex-col select-none relative">
       <div className="absolute inset-0 cad-dots opacity-30 pointer-events-none" />
@@ -47,46 +75,62 @@ export default function TemplatesPage() {
         </div>
       </header>
 
-      <main className="flex-1 max-w-5xl w-full mx-auto p-6 md:p-8 space-y-8 relative z-10">
+      <main className="flex-1 max-w-6xl w-full mx-auto p-6 md:p-8 space-y-8 relative z-10">
         <div className="space-y-1">
           <h1 className="text-2xl font-bold tracking-tight text-[#202124]">Architectural Starter Blueprints</h1>
           <p className="text-xs text-[#6B7280]">
-            Explore ready-to-draft floor plan layouts or launch a blank parametric grid.
+            Explore ready-to-draft blueprints across multi-unit apartments, multi-story commercial facilities, luxury villas, cafes, and studios.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2">
-          {TEMPLATES_LIST.map((template) => (
-            <div
-              key={template.id}
-              className="group flex flex-col justify-between p-5 rounded-xl border border-[#E5E7EB] bg-white hover:border-[#16A34A]/50 hover:shadow-md transition-all"
-            >
-              <div className="space-y-3">
-                <div className="h-28 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center relative overflow-hidden group-hover:bg-[#F0FDF4] transition-colors">
-                  <div className="absolute inset-0 bg-[radial-gradient(#16a34a_1px,transparent_1px)] opacity-15 [background-size:16px_16px]" />
-                  <Compass className="h-8 w-8 text-[#16A34A]/70 group-hover:text-[#16A34A] group-hover:scale-110 transition-all duration-200" />
-                </div>
-                <h3 className="font-semibold text-sm text-[#202124] tracking-tight">{template.name}</h3>
-                <p className="text-xs text-[#6B7280] leading-relaxed line-clamp-2">
-                  {template.description}
-                </p>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pt-2">
+          {TEMPLATES_LIST.map((template) => {
+            const badge = getTemplateBadge(template.id);
+            const BadgeIcon = badge.icon;
+            const totalRooms = template.floors.reduce((acc, f) => acc + (f.rooms?.length || 0), 0);
+            const totalWalls = template.floors.reduce((acc, f) => acc + (f.walls?.length || 0), 0);
 
-              <div className="pt-3 mt-4 border-t border-[#E5E7EB] flex items-center justify-between text-[11px] font-mono text-[#6B7280]">
-                <span>
-                  {template.floors[0]?.walls.length || 0} Walls · {template.floors[0]?.rooms.length || 0} Rooms
-                </span>
-                <Button
-                  size="sm"
-                  onClick={() => handleLaunch(template.id)}
-                  className="text-xs space-x-1 h-7 bg-[#16A34A] text-white hover:bg-[#15803D]"
-                >
-                  <span>Use Plan</span>
-                  <ArrowRight className="h-3 w-3" />
-                </Button>
+            return (
+              <div
+                key={template.id}
+                className="group flex flex-col justify-between p-5 rounded-xl border border-[#E5E7EB] bg-white hover:border-[#16A34A]/50 hover:shadow-md transition-all"
+              >
+                <div className="space-y-3">
+                  <div className="h-28 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center relative overflow-hidden group-hover:bg-[#F0FDF4] transition-colors">
+                    <div className="absolute inset-0 bg-[radial-gradient(#16a34a_1px,transparent_1px)] opacity-15 [background-size:16px_16px]" />
+                    <BadgeIcon className="h-8 w-8 text-[#16A34A]/70 group-hover:text-[#16A34A] group-hover:scale-110 transition-all duration-200" />
+                    
+                    {/* Badge */}
+                    <div className="absolute top-2 left-2">
+                      <span className={`text-[9px] font-mono font-semibold px-2 py-0.5 rounded-full border ${badge.color}`}>
+                        {badge.label}
+                      </span>
+                    </div>
+                  </div>
+
+                  <h3 className="font-semibold text-sm text-[#202124] tracking-tight">{template.name}</h3>
+                  <p className="text-xs text-[#6B7280] leading-relaxed line-clamp-2">
+                    {template.description}
+                  </p>
+                </div>
+
+                <div className="pt-3 mt-4 border-t border-[#E5E7EB] flex items-center justify-between text-[11px] font-mono text-[#6B7280]">
+                  <span>
+                    {template.floors.length > 1 ? `${template.floors.length} Stories · ` : ""}
+                    {totalWalls} Walls · {totalRooms} Rooms
+                  </span>
+                  <Button
+                    size="sm"
+                    onClick={() => handleLaunch(template.id)}
+                    className="text-xs space-x-1 h-7 bg-[#16A34A] text-white hover:bg-[#15803D]"
+                  >
+                    <span>Use Plan</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </Button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </main>
     </div>

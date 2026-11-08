@@ -31,6 +31,14 @@ interface ProjectState {
   // Floors
   setActiveFloorId: (floorId: string) => void;
   addFloor: (name: string, elevation: number, height?: number) => void;
+  addUpperFloor: (options?: {
+    name?: string;
+    height?: number;
+    copyWallsFromFloorId?: string;
+    copyOnlyExterior?: boolean;
+  }) => string;
+  duplicateFloor: (floorId: string) => string;
+  updateFloor: (floorId: string, updates: Partial<FloorData>) => void;
   deleteFloor: (floorId: string) => void;
   getCurrentFloor: () => FloorData;
 
@@ -168,6 +176,191 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       ...current,
       floors: [...current.floors, newFloor],
       activeFloorId: newFloorId,
+    };
+    set({ project: updated });
+    scheduleAutosave(updated, (saving) => set({ isSaving: saving }));
+  },
+
+  addUpperFloor: (options) => {
+    const current = get().project;
+    useHistoryStore.getState().pushSnapshot(current);
+
+    const floors = current.floors || [];
+    const highestFloor = floors.reduce(
+      (prev, curr) => (curr.elevation >= prev.elevation ? curr : prev),
+      floors[0]
+    );
+
+    const nextElevation = highestFloor
+      ? Number((highestFloor.elevation + (highestFloor.height || 2.8)).toFixed(2))
+      : 0;
+
+    const newFloorId = `floor_${Date.now()}`;
+    const levelNumber = floors.length;
+    const defaultName = `Level ${levelNumber}`;
+    const storyHeight = options?.height || 2.8;
+
+    let newWalls: WallData[] = [];
+    if (options?.copyWallsFromFloorId) {
+      const sourceFloor = floors.find((f) => f.id === options.copyWallsFromFloorId);
+      if (sourceFloor) {
+        const sourceWalls = options.copyOnlyExterior
+          ? sourceFloor.walls.filter((w) => w.isExterior)
+          : sourceFloor.walls;
+
+        newWalls = sourceWalls.map((w, idx) => ({
+          ...w,
+          id: `w_lvl${levelNumber}_${Date.now()}_${idx}`,
+          floorId: newFloorId,
+          height: storyHeight,
+        }));
+      }
+    }
+
+    const newFloor: FloorData = {
+      id: newFloorId,
+      level: levelNumber,
+      name: options?.name || defaultName,
+      elevation: nextElevation,
+      height: storyHeight,
+      walls: newWalls,
+      doors: [],
+      windows: [],
+      rooms: [],
+      furniture: [],
+      roofs: [],
+      lights: [
+        {
+          id: `light_${newFloorId}_ambient`,
+          floorId: newFloorId,
+          type: 'ambient',
+          position: { x: 5, y: nextElevation + storyHeight - 0.3, z: 5 },
+          intensity: 0.6,
+          color: '#ffffff',
+          castShadow: false,
+        },
+      ],
+      dimensions: [],
+    };
+
+    const updated: ProjectDocument = {
+      ...current,
+      floors: [...floors, newFloor],
+      activeFloorId: newFloorId,
+    };
+
+    set({ project: updated });
+
+    if (newWalls.length >= 3) {
+      setTimeout(() => {
+        get().recalculateRooms();
+      }, 50);
+    }
+
+    scheduleAutosave(updated, (saving) => set({ isSaving: saving }));
+    return newFloorId;
+  },
+
+  duplicateFloor: (floorId) => {
+    const current = get().project;
+    useHistoryStore.getState().pushSnapshot(current);
+
+    const sourceFloor = current.floors.find((f) => f.id === floorId);
+    if (!sourceFloor) return '';
+
+    const highestFloor = current.floors.reduce(
+      (prev, curr) => (curr.elevation >= prev.elevation ? curr : prev),
+      current.floors[0]
+    );
+
+    const nextElevation = Number((highestFloor.elevation + (highestFloor.height || 2.8)).toFixed(2));
+    const newFloorId = `floor_${Date.now()}`;
+    const levelNumber = current.floors.length;
+
+    // Clone walls with map
+    const wallIdMap = new Map<string, string>();
+    const clonedWalls = sourceFloor.walls.map((w, idx) => {
+      const newId = `w_dup_${Date.now()}_${idx}`;
+      wallIdMap.set(w.id, newId);
+      return {
+        ...w,
+        id: newId,
+        floorId: newFloorId,
+      };
+    });
+
+    const clonedDoors = sourceFloor.doors.map((d, idx) => ({
+      ...d,
+      id: `d_dup_${Date.now()}_${idx}`,
+      floorId: newFloorId,
+      wallId: wallIdMap.get(d.wallId) || d.wallId,
+    }));
+
+    const clonedWindows = sourceFloor.windows.map((win, idx) => ({
+      ...win,
+      id: `win_dup_${Date.now()}_${idx}`,
+      floorId: newFloorId,
+      wallId: wallIdMap.get(win.wallId) || win.wallId,
+    }));
+
+    const clonedRooms = sourceFloor.rooms.map((r, idx) => ({
+      ...r,
+      id: `r_dup_${Date.now()}_${idx}`,
+      floorId: newFloorId,
+      wallIds: r.wallIds.map((wId) => wallIdMap.get(wId) || wId),
+    }));
+
+    const clonedFurniture = sourceFloor.furniture.map((f, idx) => ({
+      ...f,
+      id: `furn_dup_${Date.now()}_${idx}`,
+      floorId: newFloorId,
+    }));
+
+    const newFloor: FloorData = {
+      id: newFloorId,
+      level: levelNumber,
+      name: `${sourceFloor.name} (Copy)`,
+      elevation: nextElevation,
+      height: sourceFloor.height,
+      walls: clonedWalls,
+      doors: clonedDoors,
+      windows: clonedWindows,
+      rooms: clonedRooms,
+      furniture: clonedFurniture,
+      roofs: [],
+      lights: [
+        {
+          id: `light_${newFloorId}_ambient`,
+          floorId: newFloorId,
+          type: 'ambient',
+          position: { x: 5, y: nextElevation + 2.5, z: 5 },
+          intensity: 0.6,
+          color: '#ffffff',
+          castShadow: false,
+        },
+      ],
+      dimensions: [],
+    };
+
+    const updated: ProjectDocument = {
+      ...current,
+      floors: [...current.floors, newFloor],
+      activeFloorId: newFloorId,
+    };
+
+    set({ project: updated });
+    scheduleAutosave(updated, (saving) => set({ isSaving: saving }));
+    return newFloorId;
+  },
+
+  updateFloor: (floorId, updates) => {
+    const current = get().project;
+    const updatedFloors = current.floors.map((f) =>
+      f.id === floorId ? { ...f, ...updates } : f
+    );
+    const updated: ProjectDocument = {
+      ...current,
+      floors: updatedFloors,
     };
     set({ project: updated });
     scheduleAutosave(updated, (saving) => set({ isSaving: saving }));

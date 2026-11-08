@@ -5,6 +5,7 @@ export type ActivePanel =
   | 'properties'
   | 'materials'
   | 'roof'
+  | 'floors'
   | 'layers'
   | 'settings'
   | 'ai'
